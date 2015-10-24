@@ -167,6 +167,7 @@ app.get('/api/search/',function(req,res){
   var uri = req.query.uri
   var userId = req.query.user
   
+  if(userId) {
 
   db.model('User').fetchById(userId).then(function(data) { 
     console.log('here is the annotations 1', data.relations.annotations.models[0], 'here is two 2 ', data.relations.annotations.models[1]);
@@ -202,9 +203,8 @@ app.get('/api/search/',function(req,res){
       res.end();
     
     });
-     
+  }      
   })
-
 
 
 
