@@ -171,7 +171,7 @@ app.get('/api/search',function(req,res){
       console.log('what we are comparing ', e.attributes.uri, ' = ', uri)
       return (e.attributes.uri === uri);
     }); 
-   
+   console.log('the resultsArray ', resultsArray)
       
     var returnArray = resultsArray.map(function(e){
       var resObj = {
