@@ -1,0 +1,39 @@
+{
+  "manifest_version": 2,
+  "name": "AnnotatorFinal",
+  "version": "1.0",
+  "web_accessible_resources": [
+    "annotator.css",
+    "annotator.js",
+    "assets/*.png"
+  ],
+
+  "browser_action": {
+    
+  },
+
+  "background": {
+    "persistent": false,
+    "scripts": [
+      "js/auth.js"
+    ]
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["annotator-original.js",  "dependencies/jquery/dist/jquery.min.js",  "dist/js/main.js"],
+      "css": ["style/onwords.css"]
+    }
+  ],
+
+  "permissions": [
+    "identity",
+    "storage",
+    "tabs",
+    "<all_urls>",
+    "https://www.facebook.com/",
+    "https://graph.facebook.com/"
+  ]
+
+}
