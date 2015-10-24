@@ -41,7 +41,7 @@ debugger;
   //   if(obj['access_token']) {
       app.start()
          .then(function() {
-            app.annotations.load({uri: window.location.href.split("?")[0]});
+            app.annotations.load({uri: window.location.href.split("?")[0]}, user: variable );
          })
     // } else {
     //   chrome.storage.onChanged.addListener(function(changes) {
