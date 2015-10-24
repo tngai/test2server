@@ -169,7 +169,7 @@ app.get('/api/search',function(req,res){
   
   if(userId) {
   db.model('User').fetchById(userId).then(function(data) { 
-    console.log('here is the annotations 1', data.relations.annotations.models[0], 'here is two 2 ', data.relations.annotations.models[1]);
+
     var resultsArray = data.relations.annotations.models.filter(function(e) {
       console.log(e.attributes.uri,' = ',uri)
       return (e.attributes.uri === uri);
