@@ -167,8 +167,8 @@ app.get('/api/search',function(req,res){
   var userId = req.query.user
   
   db.model('User').fetchById(userId).then(function(data) { 
-console.log('we are here')
     var resultsArray = data.relations.annotations.models.filter(function(e) {
+      console.log('what we are comparing ', e.attributes.uri, ' = ', uri)
       return (e.attributes.uri === uri);
     }); 
    
