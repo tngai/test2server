@@ -127,62 +127,16 @@ app.put('/api/annotations/:id',function(req,res){
 });
 
 
-// Search endpoint(Read)
-app.get('/api/search',function(req,res){
-  var uri = req.url.split('?')[1].split('=')[1].replace(/%2F/g,'/').replace(/%3A/,':');
-  db.model('Annotation').fetchByUri(uri).then(function(data){
-    var resultsArray = data.models.map(function(e){
-      var resObj = {
-        id: e.attributes.id,
-        text: e.attributes.text,
-        quote: e.attributes.quote,
-        uri: e.attributes.uri,
-        ranges: [
-          {
-            start: e.attributes.start,
-            end: e.attributes.end,
-            startOffset: e.attributes.startOffset,
-            endOffset: e.attributes.endOffset
-          }
-        ]
-       };
-       return resObj;   
-    });
-
-    var returnObj = {};
-    returnObj.rows = resultsArray;
-    console.log('this is the returnObj ',returnObj)
-    res.set('Content-Type', 'application/JSON');
-    res.json(returnObj);
-    res.end();
-  })
-})
-
-
-
 // // Search endpoint(Read)
-
 // app.get('/api/search',function(req,res){
-  
-//   var uri = req.query.uri
-//   var userId = req.query.user
-  
-//   if(userId) {
-//   db.model('User').fetchById(userId).then(function(data) { 
-
-//     var resultsArray = data.relations.annotations.models.filter(function(e) {
-//       console.log(e.attributes.uri,' = ',uri)
-//       return (e.attributes.uri === uri);
-//     }); 
-   
-      
-//     var returnArray = resultsArray.map(function(e){
+//   var uri = req.url.split('?')[1].split('=')[1].replace(/%2F/g,'/').replace(/%3A/,':');
+//   db.model('Annotation').fetchByUri(uri).then(function(data){
+//     var resultsArray = data.models.map(function(e){
 //       var resObj = {
 //         id: e.attributes.id,
-//         uri: e.attributes.uri,
 //         text: e.attributes.text,
 //         quote: e.attributes.quote,
-//         user_id: e.attributes.user_id,
+//         uri: e.attributes.uri,
 //         ranges: [
 //           {
 //             start: e.attributes.start,
@@ -193,17 +147,62 @@ app.get('/api/search',function(req,res){
 //         ]
 //        };
 //        return resObj;   
-//     })
-    
-//     var returnObj = {};
-//     returnObj.rows = returnArray;   
-//       res.set('Content-Type', 'application/JSON');
-//       res.json(returnObj);
-//       res.end();
-    
 //     });
-//   }      
+
+//     var returnObj = {};
+//     returnObj.rows = resultsArray;
+//     res.set('Content-Type', 'application/JSON');
+//     res.json(returnObj);
+//     res.end();
 //   })
+// })
+
+
+
+// Search endpoint(Read)
+
+app.get('/api/search',function(req,res){
+  
+  var uri = req.query.uri
+  var userId = req.query.user
+  
+  if(userId) {
+  db.model('User').fetchById(userId).then(function(data) { 
+
+    var resultsArray = data.relations.annotations.models.filter(function(e) {
+      console.log(e.attributes.uri,' = ',uri)
+      return (e.attributes.uri === uri);
+    }); 
+   
+      
+    var returnArray = resultsArray.map(function(e){
+      var resObj = {
+        id: e.attributes.id,
+        uri: e.attributes.uri,
+        text: e.attributes.text,
+        quote: e.attributes.quote,
+        user_id: e.attributes.user_id,
+        ranges: [
+          {
+            start: e.attributes.start,
+            end: e.attributes.end,
+            startOffset: e.attributes.startOffset,
+            endOffset: e.attributes.endOffset
+          }
+        ]
+       };
+       return resObj;   
+    })
+    
+    var returnObj = {};
+    returnObj.rows = returnArray;   
+      res.set('Content-Type', 'application/JSON');
+      res.json(returnObj);
+      res.end();
+    
+    });
+  }      
+  })
 
 
 
