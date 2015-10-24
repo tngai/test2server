@@ -161,7 +161,7 @@ app.put('/api/annotations/:id',function(req,res){
 
 
 // Search endpoint(Read)
-app.get('/api/search',function(req,res){
+app.get('/api/search/',function(req,res){
 
   var qParam = req.url.split('?')[1];
   
