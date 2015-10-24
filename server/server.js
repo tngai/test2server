@@ -161,17 +161,12 @@ app.put('/api/annotations/:id',function(req,res){
 
 
 // Search endpoint(Read)
-app.get('/api/search',function(req,res){
 
-  var qParam = req.url.split('?')[1];
+app.get('/api/search/',function(req,res){
   
-  var uriParam = qParam.split('&')[0];
-  var userParam = qParam.split('&')[1];  
-  var uri = uriParam.split('=')[1].replace(/%2F/g,'/').replace(/%3A/,':');
+  var uri = req.query.uri
+  var userId = req.query.user
   
-  if (userParam) {
-    var userId = userParam.split('=')[1];  
-  }
 
   db.model('User').fetchById(userId).then(function(data) { 
     console.log('here is the annotations 1', data.relations.annotations.models[0], 'here is two 2 ', data.relations.annotations.models[1]);
@@ -209,7 +204,6 @@ app.get('/api/search',function(req,res){
     });
      
   })
-
 
 
 
