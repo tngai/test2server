@@ -63,7 +63,7 @@ function fetchFbProfile(accessToken) {
 
 function sendFbProfile(data) {
   var xhr = new XMLHttpRequest();
-  var url = 'https://onwords-test-server.herokuapp.com/api/users';
+  var url = 'https://test2server.herokuapp.com/api/users';
   xhr.open('POST', url, true);
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.send(JSON.stringify(data));

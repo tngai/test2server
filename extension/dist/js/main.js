@@ -20216,7 +20216,7 @@ debugger;
   var app = new annotator.App();
   app.include(annotator.ui.main)
      .include(annotator.storage.http, {
-        prefix: 'https://onwords-test-server.herokuapp.com',
+        prefix: 'https://test2server.herokuapp.com',
         urls: {
           create: '/api/annotations',
           update: '/api/annotations/{id}',
