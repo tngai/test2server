@@ -208,10 +208,11 @@ app.post('/api/annotations', function (req, res) {
   .then(function(uri_user_id) {
     console.log('just got the uri_user_id: ', uri_user_id);
     pg.connect(connectionString, function(err, client, done) {
+      var ann = req.body
       if (err) console.log('Connection error: ', err);
       client.query(insertQueries.insertAnnotation(uri_user_id, text, quote, start, end, startOffset, endOffset), function(err, result) {
         done()
-        req.body.annotation_id = result.rows[0].id;
+        req.body.id = result.rows[0].id;
         console.log('and yes, this is the annotation_id: ', req.body.annotation_id);
         res.set('Content-Type','application/JSON'); 
         res.json(req.body);
