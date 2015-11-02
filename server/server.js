@@ -245,12 +245,13 @@ app.get('/api/search',function (req, res) {
                 endOffset: annotation.endoffset
               }
             ]
-          }
+          };
       returnObj.rows = finalAnnotationsObjects
       res.set('Content-Type','application/JSON'); 
       res.json(returnObj);
     })
   });
+});
 });
 
 
