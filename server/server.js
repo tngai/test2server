@@ -222,7 +222,7 @@ app.post('/api/annotations', function (req, res) {
 
 
 app.get('/api/search',function (req, res) {
-  var user_id = req.query.user_id;
+  var user_id = req.query.user;
   var uri = req.query.uri;
 
   pg.connect(connectionString, function(err, client, done) {
