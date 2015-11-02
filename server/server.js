@@ -228,26 +228,27 @@ app.get('/api/search',function (req, res) {
   pg.connect(connectionString, function(err, client, done) {
     if (err) console.log('Connection error: ', err);
     client.query(selectQueries.selectAnnotations(uri, user_id), function(err, result) {
+      var returnObj = {}
       done();
-      var finalAnnotationObjects = result.rows.map(function(annotation) {
-        return {
-          user_id: user_id,
-          uri: uri,
-          annotation_id: annotation.id,
-          text: annotation.text,
-          quote: annotation.quote,
-          ranges: [
-            {
-              start: annotation.start1,
-              end: annotation.end1,
-              startOffset: annotation.startoffset,
-              endOffset: annotation.endoffset
-            }
-          ]
-        }
-      });
+        var finalAnnotationObjects = result.rows.map(function(annotation) {
+          return {
+            user_id: user_id,
+            uri: uri,
+            annotation_id: annotation.id,
+            text: annotation.text,
+            quote: annotation.quote,
+            ranges: [
+              {
+                start: annotation.start1,
+                end: annotation.end1,
+                startOffset: annotation.startoffset,
+                endOffset: annotation.endoffset
+              }
+            ]
+          }
+      returnObj.rows = finalAnnotationsObjects
       res.set('Content-Type','application/JSON'); 
-      res.json(finalAnnotationObjects);
+      res.json(returnObj);
     })
   });
 });
