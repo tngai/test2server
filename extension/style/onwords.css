@@ -1,66 +1,312 @@
 .annotation-sidebar {
+  z-index: 10000;
   position: fixed; 
   top: 0; 
   width: 600px; 
-  right: -580px; 
-  background-color: black; 
+  right: -580px;  
   height: 100%; 
-  z-index: 10000; 
   background: rgba(0, 0, 31, 0);
-  overflow-y: scroll;
 }
-
 #scrollview {
-  height: 1000px;
   color: black; 
 }
-
 /* React */
-
-.annotator-view-container {
-  width: 300px;
-  height: 1000px;
-  background: rgba(249, 249, 249, 1);
+.app-container {
+  background-color: rgb(233, 233, 233);
 }
-
+.annotator-body-container {
+  height: 1000px;
+  overflow-y: scroll;
+}
+.annotator-button-container {
+  margin-top: 7px;
+  width: 25px;
+  height: 25px;
+}
 .annotator-button {
   width: 25px;
   height: 25px;
-  background: rgba(55, 54, 68, 0);
 }
 
-.annotator-minimize-button {
+/* Annotator View */
+.annotator-view-container {
+  width: 300px;
+  height: 700px;
+}
+.annotator-buttons-container {
+  width: 300px;
+  height: 38px;
+}
+.friends-annotations-button-container {
+  float: right;
   width: 25px; 
   height: 25px;
-  background: rgba(55, 54, 68, 0);
-  /*position: absolute;*/
-  display: block;
-  right: 0;
+  margin: 7px 0 0 7px;
 }
-
+.friends-annotations-button {
+  width: 25px; 
+  height: 25px;
+}
 .home-button {
   width: 25px;
   height: 25px;
-  background: rgba(55, 54, 68, 0); 
 }
-
-.minimize-button {
-  width: 25px;
+.home-button-container {
+  float: right;
+  margin: 7px 0 0 7px;
+  /*display: inline-block;*/
+}
+.annotator-my-view-button-container {
+  float: left;
+  width: 25px; 
   height: 25px;
-  background: rgba(55, 54, 68, 0);  
+  margin: 7px 0 0 7px;
+  display: inline-block;
+} 
+.annotator-my-view-button {
+  width: 25px; 
+  height: 25px;
+  border-radius: 50%;
 }
 
+
+
+  /* Header */
+.annotator-head-container {
+  margin-bottom: 10px;
+  width: 300px;
+  text-align: center;
+}
+.annotator-user-image {
+  margin: 0 auto;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+}
+.username-container {
+  color: red;
+  margin-bottom: 5px;
+}
+.profile-statistics-container {
+  width: 300px;
+  margin-bottom: 5px;
+}
+.posts-container {
+  border-right: 2px solid black;
+  display: inline-block;
+  padding-right: 5px;
+}
+.followers-container {
+  border-right: 2px solid black;
+  display: inline-block;
+  padding-right: 5px;
+  padding-left: 5px;
+}
+.following-container {
+  display: inline-block;
+  padding-left: 5px;
+}
+.statistic {
+  padding-right: 3px; 
+}
+.description-container {
+  width: 255px;
+  display: inline-block;
+  border-bottom: 1px solid black;
+  padding: 0px 20px 5px 20px;
+}
+  
+
+
+  /* Feed View */
 .feed-view-container {
   width: 600px;
   height: 1000px;
-  background: rgba(249, 249, 249, 1);
+  text-align: center;
+}
+.header-container {
+  margin-bottom: 10px;
+  width: 600px;
+  text-align: center;
+}
+.minimize-button-container {
+  float: left;
+  height: 25px;
+  width: 25px;
+}
+.posts-container {
+  border-right: 2px solid black;
+  display: inline-block;
+  padding-right: 5px;
+}
+.followers-container {
+  border-right: 2px solid black;
+  display: inline-block;
+  padding-right: 5px;
+  padding-left: 5px;
+}
+.following-container {
+  display: inline-block;
+  padding-left: 5px;
+}
+.statistic {
+  padding-right: 3px; 
+}
+.description-container {
+  width: 255px;
+  display: inline-block;
+  border-bottom: 1px solid black;
+  padding: 0px 20px 5px 20px;
 }
 
-.feed-container {
-  width: 500px;
-  height: 700px;
-  border-style: solid;
-  border-width: 2px;
-  border-color: black;
+
+  /* Feed View */
+.minimize-button {
+  height: 25px;
+  width: 25px;
+}
+.body-container {
+  display: inline-block;
+  height: 800px;
+  width: 595px;
+  border: 1px solid black;
+}
+/*ButtonContainer*/
+.button-container {
+  margin-top: 20px; 
+  margin-right: 10px;
+  height: 130px;
+  width: 25px;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.feed-button {
+  margin-top: 2px;
+  height: 25px;
+  width: 25px;
+}
+
+/*Settings*/
+.settings-profile-edit-icon {
+  height: 16px;
+  width: 16px;
+}
+#profile-pic {
+  height:300px;
+  width:auto;
+  border-radius: 50%;
+  padding: 5px;
+}
+/*FeedMyAnnotations*/
+.feed-my-annotations-container {
+  display: inline-block;
+  height: 800px;
+  width: 595px;
+  overflow-y: scroll;
+  background-image: url('http://www.designbolts.com/wp-content/uploads/2013/02/Noise-Light-Grey-Tileable-Pattern-For-Website-Background.jpg');
+}
+.my-annotations-links-container {
+  display: inline-block;
+  height: 800px;
+  width: 595px;
+  overflow-y: scroll;
+}
+.my-annotations-link-container {
+  display: inline-block;
+  height: 100px;
+  width: 495px;
+  margin: 15px 0px 15px 0px;
+  background-color: white;
+  border: 1px solid black;
+}
+
+/*FriendsFeed*/
+
+/*SearchView*/
+.search-view-container {
+  display: inline-block;
+  height: 800px;
+  width: 595px;
+}
+.form-search-container {
+  text-align: center;
+  padding: 10px;
+}
+.feed-search-result {
+  list-style-type: none;
+  display: float;
+  height: 100px;
+  width: 530px;
   margin: 0 auto;
+}
+.feed-search-result img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+.feed-search-img {
+  float: left;
+  width: 90px;
+  height: 90px;
+}
+.feed-search-follow {
+  height: 1.5em;
+  width: 3em;
+}
+.feed-search-following {
+  height: 1.5em;
+  width: 3em;
+}
+.feed-search-name {
+  font-size: medium;
+}
+.annotationList {
+  height: 1000px;
+  overflow-y: scroll;
+}
+
+
+
+  /*FriendsAnnotationsView*/
+.friends-annotations-view-container {
+  width: 300px;
+  height: 700px;
+  text-align: center;
+}
+.friends-container {
+  width: 300px;
+  height: 36px;
+  margin-top: 30px;
+  margin-bottom: 10px;
+  overflow-x: scroll;
+  background: rgba(235, 235, 235, 1);
+}
+.friends-pic {
+  margin: 3px 5px 3px 5px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: black;
+  display: inline-block;
+}
+.redirectLink {
+  z-index: 1000;
+}
+
+/*FriendsButtonsContainer*/
+.friends-annotations-buttons-container {
+  width: 300px;
+  height: 38px;
+}
+.my-annotations-button-container {
+  float: right;
+  height: 25px;
+  width: 25px;
+  margin: 7px 0 0 7px;
+}
+.my-annotations-button {
+  height: 25px;
+  width: 25px;
+  border-radius: 50%;
 }

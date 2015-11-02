@@ -1,80 +1,76 @@
-// var Promise = require('bluebird');
-// var dbOptions = {
-//   client: process.env.dbClient || 'postgres',
-//   connection: process.env.DATABASE_URL
-// }
-var dbOptions = process.env.DATABASE_URL || {
-  client: process.env.dbClient || 'postgres',
-  connection: {
-    host: process.env.dbHost || '127.0.0.1',
-    user: process.env.dbUser || 'root',
-    password: process.env.dbPassword || '',
-    database: process.env.dbDatabase || 'onwordsdb',
-    charset: 'utf8'
-  }
-};
 
-var knex = require('knex')(dbOptions);
+var users = "CREATE TABLE IF NOT EXISTS users ( " +
+							"id BIGSERIAL PRIMARY KEY, " +
+							"facebook_id TEXT, " +
+							"full_name TEXT, " +
+							"username TEXT, " +
+							"fb_pic TEXT, " +
+							"uploaded_pic TEXT, " +
+							"email TEXT, " +
+						 	"description TEXT " +
+						");";
 
-module.exports = db = require('bookshelf')(knex);
+var followers = "CREATE TABLE IF NOT EXISTS followers ( " +
+									"id BIGSERIAL PRIMARY KEY, " +
+									"facebook_id TEXT, " +
+									"full_name TEXT, " +
+									"username TEXT, " +
+									"fb_pic TEXT, " +
+									"uploaded_pic TEXT, " +
+									"email TEXT, " +
+									"description TEXT " +
+								");";
 
-db.plugin('registry');
+var users_followers = "CREATE TABLE IF NOT EXISTS users_followers ( " +
+												"id BIGSERIAL PRIMARY KEY, " +
+												"user_id BIGINT REFERENCES users(id) ON DELETE CASCADE, " +
+												"follower_id BIGINT REFERENCES users(id) ON DELETE CASCADE " +
+											");";
 
-var buildTable = function(name, callback) {
-  return db.knex.schema.hasTable(name)
-  .then(function(exists) {
-    if (exists) {
-      return { name: name, created: false };
-    } else {
-      return db.knex.schema.createTable(name, callback);
-    }
-  })
-  .then(function(response) {
-    if (!response.name) {
-      qb = response;
-      if (qb) {
-        return { name: name, created: true };
-      } else {
-        return { name: name, created: false };
-      }
-    } else { return response; }
-  });
-};
+var uri = "CREATE TABLE IF NOT EXISTS uri ( " +
+						"id BIGSERIAL PRIMARY KEY, " +
+						"uri_link TEXT, " +
+						"title TEXT " +
+					");";
 
-var users = buildTable('users', function(table){
-  table.increments('id').primary();
-  table.string('facebook_id').unique();
-  table.string('full_name');
-  table.string('pic_url');
-  table.string('email');
-});
+var uri_users = "CREATE TABLE IF NOT EXISTS uri_users ( " +
+									"id BIGSERIAL PRIMARY KEY, " +
+									"uri_id BIGINT REFERENCES uri(id) ON DELETE CASCADE, " +
+									"user_id BIGINT REFERENCES users(id) ON DELETE CASCADE, " +
+									"is_shared BOOL DEFAULT false, " +
+									"updated_at TIMESTAMPTZ DEFAULT NOW(), " +
+									"general_post TEXT, " +
+									"is_archived BOOL DEFAULT false, " +
+									"archived_at TIMESTAMPTZ " +
+								");";
 
-var annotations = buildTable('annotations', function(table){
-  table.increments('id').primary();
-  table.string('text');
-  table.string('quote',2000);
-  table.string('uri');
-  table.string('start');
-  table.string('end');
-  table.integer('startOffset');
-  table.integer('endOffset');
-  table.integer('user_id');
-});
+var uri_users_followers = "CREATE TABLE IF NOT EXISTS uri_users_followers ( " +
+														"id BIGSERIAL PRIMARY KEY, " +
+														"uri_id BIGINT REFERENCES uri(id) ON DELETE CASCADE, " +
+														"user_follower_id BIGINT REFERENCES users_followers(id) ON DELETE CASCADE, " +
+														"is_liked BOOL DEFAULT false " +
+													");";
 
-var users_followers = buildTable('users_followers', function(table){
-  table.integer('user_id');
-  table.integer('follower_id');
-});
+var annotations = "CREATE TABLE IF NOT EXISTS annotations ( " +
+										"id BIGSERIAL PRIMARY KEY, " +
+										"uri_user_id BIGINT REFERENCES uri_users(id) ON DELETE CASCADE, " +
+										"text TEXT, " +
+										"quote TEXT, " +
+										"start1 TEXT, " +
+										"end1 TEXT, " +
+										"startoffset TEXT,  " +
+										"endoffset TEXT, " +
+										"created_at TIMESTAMPTZ DEFAULT NOW(), " +
+										"updated_at TIMESTAMPTZ DEFAULT NOW() " +
+									");";
 
-var tables = [users, annotations, users_followers];
- 
-Promise.all(tables)
-.then(function(tables) {
-  tables.forEach(function(table) {
-    if (table.created) {
-      console.log('Bookshelf: created table', table.name);
-    } else {
-      console.log('Bookshelf:', table.name, 'table already exists');
-    }
-  });
-});
+var comments = "CREATE TABLE IF NOT EXISTS comments ( " +
+								"id BIGSERIAL PRIMARY KEY, " +
+								"uri_user_follower_id BIGINT REFERENCES uri_users_followers(id) ON DELETE CASCADE, " +
+								"annotation_id BIGINT REFERENCES annotations(id) ON DELETE CASCADE, " +
+								"message TEXT, " +
+								"created_at TIMESTAMPTZ DEFAULT NOW() " +
+			 				");"; 
+
+var tables = [users, followers, users_followers, uri, uri_users, uri_users_followers, annotations, comments];
+module.exports = tables;

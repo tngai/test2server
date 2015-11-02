@@ -44,8 +44,6 @@
 -------------------------------------------------------------------- */
 
 .annotator-hl {
-	background: #FFFF0A;
-	background: rgba(255, 255, 10, 0.3);
 	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#4DFFFF0A, endColorstr=#4DFFFF0A)";  /* 0.3 == 4D in MS filters */
 }
 

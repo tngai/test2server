@@ -1,0 +1,66 @@
+.annotation-sidebar {
+  position: fixed; 
+  top: 0; 
+  width: 600px; 
+  right: -580px; 
+  background-color: black; 
+  height: 100%; 
+  z-index: 10000; 
+  background: rgba(0, 0, 31, 0);
+  overflow-y: scroll;
+}
+
+#scrollview {
+  height: 1000px;
+  color: black; 
+}
+
+/* React */
+
+.annotator-view-container {
+  width: 300px;
+  height: 1000px;
+  background: rgba(249, 249, 249, 1);
+}
+
+.annotator-button {
+  width: 25px;
+  height: 25px;
+  background: rgba(55, 54, 68, 0);
+}
+
+.annotator-minimize-button {
+  width: 25px; 
+  height: 25px;
+  background: rgba(55, 54, 68, 0);
+  /*position: absolute;*/
+  display: block;
+  right: 0;
+}
+
+.home-button {
+  width: 25px;
+  height: 25px;
+  background: rgba(55, 54, 68, 0); 
+}
+
+.minimize-button {
+  width: 25px;
+  height: 25px;
+  background: rgba(55, 54, 68, 0);  
+}
+
+.feed-view-container {
+  width: 600px;
+  height: 1000px;
+  background: rgba(249, 249, 249, 1);
+}
+
+.feed-container {
+  width: 500px;
+  height: 700px;
+  border-style: solid;
+  border-width: 2px;
+  border-color: black;
+  margin: 0 auto;
+}
