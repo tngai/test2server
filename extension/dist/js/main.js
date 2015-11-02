@@ -20442,7 +20442,7 @@ var MyAnnotations = React.createClass({displayName: "MyAnnotations",
     console.log('MyAnnotations - componentDidMount');
     var user = window.localStorage.user_id;
     var uri = window.location.href.split("?")[0];
-    var completeUri = 'https://onwords-test-server.herokuapp.com/api/search/users?user_id=' + user;
+    var completeUri = 'https://test2server.herokuapp.com/api/search/users?user_id=' + user;
     $.get(completeUri, function(result) {
       if (this.isMounted()) {
         this.setState({
@@ -20492,7 +20492,7 @@ var FeedSearchList = React.createClass({displayName: "FeedSearchList",
   },
 
   componentWillReceiveProps: function(nextProps) {
-    var urlPrefix = 'https://onwords-test-server.herokuapp.com/api/users';
+    var urlPrefix = 'https://test2server.herokuapp.com/api/users';
   /*  // var ownId = window.localStorage.getItem('user_id');
     // var userIdQS = '?user_id=' + ownId;
     // var fullNameQS = '&full_name=' + this.props.fullName;
@@ -21008,7 +21008,7 @@ var FriendsAnnotationsView = React.createClass({displayName: "FriendsAnnotations
     var annotations = [];
     var friends = {};
 
-    $.get('https://onwords-test-server.herokuapp.com/api/search/uri', {uri: uri})
+    $.get('https://test2server.herokuapp.com/api/search/uri', {uri: uri})
       .done(function(data) {
         chrome.storage.local.get(uri, function(obj) {
           debugger;
@@ -21212,7 +21212,7 @@ exports.annotate = function(userId) {
   var app = new annotator.App();
   app.include(annotator.ui.main)
     .include(annotator.storage.http, {
-      prefix: 'https://onwords-test-server.herokuapp.com',
+      prefix: 'https://test2server.herokuapp.com',
       urls: {
         create: '/api/annotations',
         update: '/api/annotations/{id}',

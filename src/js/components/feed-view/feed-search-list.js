@@ -8,7 +8,7 @@ var FeedSearchList = React.createClass({
   },
 
   componentWillReceiveProps: function(nextProps) {
-    var urlPrefix = 'https://onwords-test-server.herokuapp.com/api/users';
+    var urlPrefix = 'https://test2server.herokuapp.com/api/users';
   /*  // var ownId = window.localStorage.getItem('user_id');
     // var userIdQS = '?user_id=' + ownId;
     // var fullNameQS = '&full_name=' + this.props.fullName;

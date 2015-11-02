@@ -111,7 +111,7 @@ var FriendsAnnotationsView = React.createClass({
     var annotations = [];
     var friends = {};
 
-    $.get('https://onwords-test-server.herokuapp.com/api/search/uri', {uri: uri})
+    $.get('https://test2server.herokuapp.com/api/search/uri', {uri: uri})
       .done(function(data) {
         chrome.storage.local.get(uri, function(obj) {
           debugger;

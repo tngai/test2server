@@ -1,7 +1,7 @@
 function fetchToken() {
   var access_token;
 
-  var clientID = '1505521939741473';
+  var clientID = '';
 
 
   var redirectUri = 'https://' + chrome.runtime.id + '.chromiumapp.org/provider_cb';
@@ -68,7 +68,7 @@ function fetchFbProfile(accessToken) {
 
 function sendFbProfile(data) {
   var xhr = new XMLHttpRequest();
-  var url = 'https://onwords-test-server.herokuapp.com/api/users';
+  var url = 'https://test2server.herokuapp.com/api/users';
   xhr.open('POST', url, true);
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.onreadystatechange = function() {
