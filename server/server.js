@@ -123,7 +123,7 @@ app.post('/api/users', function (req, res) {
 
 
 app.post('/api/annotations', function (req, res) {
-  var user_id = req.body.user_id;
+  var user_id = req.body.user;
   var uri = req.body.uri;
   var title = req.body.title;
   var text = req.body.text;
@@ -132,7 +132,7 @@ app.post('/api/annotations', function (req, res) {
   var end = req.body.ranges[0].end;
   var startOffset = req.body.ranges[0].startOffset;
   var endOffset = req.body.ranges[0].endOffset;
-
+  var ann = req.body;
  
   (function(){
     return new Promise(function(resolve, reject) {
@@ -208,7 +208,6 @@ app.post('/api/annotations', function (req, res) {
   .then(function(uri_user_id) {
     console.log('just got the uri_user_id: ', uri_user_id);
     pg.connect(connectionString, function(err, client, done) {
-      var ann = req.body
       if (err) console.log('Connection error: ', err);
       client.query(insertQueries.insertAnnotation(uri_user_id, text, quote, start, end, startOffset, endOffset), function(err, result) {
         done()
