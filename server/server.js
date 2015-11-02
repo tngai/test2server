@@ -230,6 +230,7 @@ app.get('/api/search',function (req, res) {
     client.query(selectQueries.selectAnnotations(uri, user_id), function(err, result) {
       var returnObj = {}
       done();
+      if(result) {
         var finalAnnotationObjects = result.rows.map(function(annotation) {
           return {
             user_id: user_id,
@@ -245,7 +246,8 @@ app.get('/api/search',function (req, res) {
                 endOffset: annotation.endoffset
               }
             ]
-          };
+          };        
+      } 
       returnObj.rows = finalAnnotationsObjects
       res.set('Content-Type','application/JSON'); 
       res.json(returnObj);
