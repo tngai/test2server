@@ -58,21 +58,6 @@ var checkAndInsertIfNotExists = function (checkQuery, insertQuery, callback) {
   }
 }
 
-// pg.connect(connectionString, function(err, client, done) {
-//  if (err) console.log('Connection error: ', err);
-//  client.query(checkQueries.checkURIUser(20, 1), function(err, result) {
-//    done();
-//    console.log('lets see: ',result.rows[0].exists);
-//  });
-// });
-
-// pg.connect(connectionString, function(err, client, done) {
-//  if (err) console.log('Connection error: ', err);
-//  client.query(checkQueries.checkURI(uri), function(err, result) {
-//    done();
-//    resolve(result.rows[0].exists);
-//  });
-// });  
 
 
 //------------------------------------------------------------------------------------//
