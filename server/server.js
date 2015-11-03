@@ -583,6 +583,7 @@ app.get('api/search/users', function(req, res) {
   var full_name = req.query.full_name;
   console.log('user_id = ' + user_id);
   console.log('full_name = ' + full_name);
+  res.set('Content-Type','application/JSON'); 
   res.json({user_id: user_id, full_name: full_name});
   // var getFullNamePicURLAndID = function(full_name) {
   //   return new Promise(function(resolve, reject) {
