@@ -252,7 +252,7 @@ app.get('/api/search',function (req, res) {
             ]
           };        
       }) 
-      returnObj.rows = finalAnnotationsObjects;
+      returnObj.rows = finalAnnotationObjects;
       
     }else{
       returnObj.rows = [];
