@@ -7,12 +7,12 @@ var selectQueries = {
 	},
 
 	selectFullNameAndPicURLBasedOnID: function (user_id) {
-		return "SELECT id, full_name, pic_url FROM users " +
+		return "SELECT full_name, pic_url FROM users " +
 						"WHERE user_id = " + user_id + ";";
 	},
 
 	selectFullNamePicURLAndID: function(full_name) {
-		return "SELECT full_name, pic_url FROM users " +
+		return "SELECT id, full_name, pic_url FROM users " +
 						"WHERE full_name = '" + full_name + "';";
 	},
 
