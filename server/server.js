@@ -124,7 +124,7 @@ app.post('/api/users', function (req, res) {
 
 app.post('/api/annotations', function (req, res) {
   console.log(' the req body ', req.body)
-  var user_id = req.body.user;
+  var user_id = req.body.user_id;
   var uri = req.body.uri;
   var title = req.body.title;
   var text = req.body.text;

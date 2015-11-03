@@ -1,7 +1,8 @@
 function fetchToken() {
+  debugger;
   var access_token;
 
-  var clientID = '1505521939741473';
+  var clientID = '';
 
 
   var redirectUri = 'https://' + chrome.runtime.id + '.chromiumapp.org/provider_cb';
@@ -33,12 +34,14 @@ function fetchToken() {
   });
 }
 
-chrome.storage.sync.clear();
-chrome.storage.local.clear();
 
 chrome.browserAction.onClicked.addListener(function() {
+  chrome.storage.sync.clear();
+  chrome.storage.local.clear();
+  debugger;
   console.log('browserAction clicked');
   chrome.storage.sync.get('access_token', function(obj) {
+    debugger;
     if (!obj['access_token']) {
       fetchToken();
     }
@@ -67,6 +70,7 @@ function fetchFbProfile(accessToken) {
 }
 
 function sendFbProfile(data) {
+  debugger;
   var xhr = new XMLHttpRequest();
   var url = 'https://test2server.herokuapp.com/api/users';
   xhr.open('POST', url, true);

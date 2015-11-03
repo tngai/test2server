@@ -18,6 +18,7 @@ if (code.substring(code.length - 11)) {
 } 
 
 var identityListener = function(changes) {
+  debugger;
   if (changes.user && changes.user.newValue) {
     debugger;
     if (!userId) {
@@ -31,6 +32,7 @@ var identityListener = function(changes) {
 };
 
 chrome.storage.sync.get('user', function(obj) {
+  debugger;
   if (obj.user) {
     if (!userId) {
       userId = obj.user.id;
