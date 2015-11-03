@@ -581,7 +581,7 @@ app.get('/api/personalfeed', function (req, res) {
 });
 
 
-  app.post('/api/user/update', function(req,res){
+  app.post('/api/users/update', function(req,res){
     var userInfo = req.body;
     var updateUserFollowerRow = function(table,infoObj) {
       return new Promise(function(resolve,reject){
@@ -798,15 +798,32 @@ app.get('/api/personalfeed/share', function (req, res) {
 
 });
 
-app.post('/api/uri/gp', function(req,res) {
-  var gpObj = req.body;
-  var uri = req.body.uri;
-  var user_id = req.body.user_id;
-  var foller_id= req.body.follower_id
-  var insertGP = function(){
+  app.post('/api/uri/gp', function(req,res) {
+    var gpObj = req.body;
+    var uri = req.body.uri;
+    var user_id = req.body.user_id;
+    var generalPost = req.body.generalPost;
 
-  }
-});
+    var updateGP = function(uri, user_id, generalPost) {
+      return new Promise(function(resolve,reject){
+        pg.connect(connectionString, function(err, client, done) {
+          if (err) {
+            console.log('Connection error: ', err);
+            return reject(err);
+          }
+          client.query(updateQueries.updateGeneralPost(uri, user_id, generalPost), function(err, result) {
+            if(err) console.log(err);
+            done();
+            resolve(result.rows[0]);
+          });
+        });
+      });
+      }; 
+    updateGP(uri, user_id, generalPost).then(function(){
+      res.set('Content-Type','application/JSON'); 
+      res.json(gpObj);  
+    });
+  });
 
 
 
