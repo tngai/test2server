@@ -34,36 +34,37 @@
 	  }
 
 	  var user_follower_info = {
-
+	  	user_id: 1,
+	  	follower_id: 6
 	  }
 
 	  // That POST request
-	  // $.ajax({
-	  //   url: 'http://test2server.herokuapp.com/api/annotations',
-	  //   type: 'POST',
-	  //   data: JSON.stringify(annotationInfo),
-	  //   contentType: 'application/json',
-	  //   success: function (data) {
-	  //     console.log('successful post! Here is what I got back: ', data);
-	  //   },
-	  //   error: function (data) {
-	  //     console.error('Sorry, chatterbox failed to create message');
-	  //   }
-	  // });
+	  $.ajax({
+	    url: 'http://test2server.herokuapp.com/api/users/follow',
+	    type: 'POST',
+	    data: JSON.stringify(user_follower_info),
+	    contentType: 'application/json',
+	    success: function (data) {
+	      console.log('successful post! Here is what I got back: ', data);
+	    },
+	    error: function (data) {
+	      console.error('Sorry, chatterbox failed to create message');
+	    }
+	  });
 
 
 	  // That GET request
-	  $.ajax({
-	    url: 'http://test2server.herokuapp.com/api/search/users?user_id=1&full_name=Jihoon%20Kim',
-	    type: 'GET',
-	    contentType: 'application/json',
-	    success: function (data) {
-	      console.log('successful get! And this is the data: ', data);
-	    },
-	    error: function (data) {
-	      console.error('My bad, chatterbox failed to read message');
-	    }
-	  });
+	  // $.ajax({
+	  //   url: 'http://test2server.herokuapp.com/api/search/users?user_id=1&full_name=Jihoon%20Kim',
+	  //   type: 'GET',
+	  //   contentType: 'application/json',
+	  //   success: function (data) {
+	  //     console.log('successful get! And this is the data: ', data);
+	  //   },
+	  //   error: function (data) {
+	  //     console.error('My bad, chatterbox failed to read message');
+	  //   }
+	  // });
 
 
 	  // That PUT request
