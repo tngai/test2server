@@ -666,7 +666,7 @@ app.post('/api/users/follow', function(req, res) {
 })
 
 app.get('/api/users/uri/annotations', function(req, res) {
-  var user_id = req.query.user_id;
+  var user_id = req.query.user_id; 
   var uri = req.query.uri;
 
 
