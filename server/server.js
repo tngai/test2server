@@ -596,7 +596,7 @@ app.get('/api/search/users', function(req, res) {
     });
   }
 
-  var getCheckIfYoureFollowingThem = function(follower_id) {
+  var getCheckIfYoureFollowingThem = function(user_id) {
     return new Promise(function(resolve, reject) {
       pg.connect(connectionString, function(err, client, done) {
         if (err) console.error('Connection error: ', err);
@@ -629,11 +629,43 @@ app.get('/api/search/users', function(req, res) {
 
 }); 
 
-// selectFullNameAndPicURL
-// checkUserFollower
+
+app.post('/api/users/follow', function(req, res) {
+  var user_id = req.body.user_id;
+  var follower_id = req.body.follower_id;
 
 
-app.get('api/personalfeed/share', function (req, res) {
+  var getCheckIfYoureFollowingThem = function(user_id) {
+    return new Promise(function(resolve, reject) {
+      pg.connect(connectionString, function(err, client, done) {
+        if (err) console.error('Connection error: ', err);
+        client.query(checkQueries.checkUserFollower(user_id, follower_id), function(err, result) {
+          done();
+          resolve(result.rows[0].exists);
+        });
+      });
+    });
+  }
+
+  var insertUserFollowerOrNot = function(exists) {
+    if (!exists) {
+      pg.connect(connectionString, function(err, client, done) {
+        if (err) console.error('Connection error: ', err);
+        client.query(insertQueries.insertUserFollowerRelationship(user_id, follower_id), function(err, result) {
+          done();
+          res.sendStatus(201);
+        });
+      })
+    }
+  }
+
+  getCheckIfYoureFollowingThem(user_id)
+    .then(insertUserFollowerOrNot)
+
+})
+
+
+app.get('/api/personalfeed/share', function (req, res) {
   var body = req.body;
 
 });
@@ -645,9 +677,6 @@ app.get('/api/search/uri', function (req, res) {
   // sends back annotations based on uri
 });
 
-// app.get('/api/search/users', function (req, res) {
-//   // sends back annotations based on users
-// });
 
 
 
