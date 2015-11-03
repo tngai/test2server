@@ -313,6 +313,8 @@ app.get('/api/homefeed', function (req, res) {
           return reject(err);
         }
         client.query(selectQueries.selectFullNameAndPicURLBasedOnID(person.user_id), function(err, result) {
+          console.log('result in getFullNameAndPicURL: ', result);
+          console.log('this was person.user_id: ', person.user_id);
           done();
           resolve(result.rows[0]);
         });
