@@ -597,11 +597,11 @@ app.get('/api/search/users', function(req, res) {
     });
   }
 
-  var getCheckIfYoureFollowingThem = function(user_id) {
+  var getCheckIfYoureFollowingThem = function(personYouSearchedForID) {
     return new Promise(function(resolve, reject) {
       pg.connect(connectionString, function(err, client, done) {
         if (err) console.error('Connection error: ', err);
-        client.query(checkQueries.checkUserFollower(user_id, follower_id), function(err, result) {
+        client.query(checkQueries.checkUserFollower(personYouSearchedForID, user_id), function(err, result) {
           done();
           resolve(result.rows[0].exists);
         });
