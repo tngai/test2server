@@ -177,6 +177,7 @@ app.post('/api/annotations', function (req, res) {
             if (err) console.log('Connection error: ', err);
             client.query(checkQueries.checkURIUser(uri_id, user_id), function(err, result) {
               done();
+              console.log('what is user_id: ', user_id)
               resolveNested1(result.rows[0].exists);
             });
           });
