@@ -51,7 +51,7 @@ var selectQueries = {
 	},
 
 	selectAnnotations: function (uri, user_id) {
-		return "SELECT a.text, a.quote, a.start1, a.end1, a.startoffset, a.endoffset " +
+		return "SELECT a.id, a.text, a.quote, a.start1, a.end1, a.startoffset, a.endoffset " +
 					 "FROM uri, uri_users uu, annotations a " +
 					 "WHERE uu.user_id = " + user_id + " " +
 					 "AND uri.id = uu.uri_id " +
