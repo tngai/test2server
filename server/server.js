@@ -232,9 +232,10 @@ app.get('/api/search',function (req, res) {
     if (err) console.log('Connection error: ', err);
     client.query(selectQueries.selectAnnotations(uri, user_id), function(err, result) {
       var returnObj = {}
+      var finalAnnotationObjects;
       done();
       if(result) {
-        var finalAnnotationObjects = result.rows.map(function(annotation) {
+         finalAnnotationObjects = result.rows.map(function(annotation) {
           return {
             user_id: user_id,
             uri: uri,
