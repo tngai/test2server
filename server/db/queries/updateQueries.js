@@ -25,8 +25,20 @@ var updateQueries = {
 		return "UPDATE annotations " +
 					 "SET text = '" + text + "' " +
 					 "WHERE id = " + annotation_id + ";";
+	},
+	updateUserRow: function(newInfo){
+		var info = [];
+		var rSTring;
+		if(newInfo.pic_url) {
+			info.push(" pic_url='"+newInfo.pic_url+"'");
+		}
+		if(newInfo.description) {
+			info.push(" description='"+newInfo.description+"'");
+		}
+		info = info.join(',');
+		rString = "UPDATE Users SET "+info+ " WHERE id= '"+newInfo.user_id.toString()+"';"
+		return rString;		
 	}
-
 }
 
 module.exports = updateQueries;
