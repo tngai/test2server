@@ -694,7 +694,9 @@ app.get('/api/users/uri/annotations', function(req, res) {
           console.error('Connection error: ', err);
           return reject(err);
         }
-        client.query(selectQueries.selectPersonIfPersonAnnotatedThisPage(uri, person), function(err, result) {
+        client.query(selectQueries.selectPersonIfPersonAnnotatedThisPage(uri, person.user_id), function(err, result) {
+          console.log('result after selectPersonIfPersonAnnotatedThisPage: ', result);
+          console.log('person.user_id after selectPersonIfPersonAnnotatedThisPage: ', person.user_id);
           done();
           resolve(result.rows[0].user_id);
         })
@@ -722,7 +724,7 @@ app.get('/api/users/uri/annotations', function(req, res) {
     .then(function(peopleYouFollow) {
       console.log('peopleYouFollow in getPeopleYouFollow: ', peopleYouFollow);
       return Promise.filter(peopleYouFollow, function(personYouFollow) {
-        return checkIfPersonAnnotatedThisArticle(uri, personYouFollow.user_id)
+        return checkIfPersonAnnotatedThisArticle(uri, personYouFollow)
       })
     })
     .then(function(peopleYouFollowWhoAnnotatedPage) {
