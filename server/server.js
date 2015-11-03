@@ -286,7 +286,7 @@ app.delete('/api/annotations/:id',function (req, res) {
 
 app.get('/api/homefeed', function (req, res) {
   var user_id = req.query.user_id;
- 
+  console.log('dude, it does the changes')
   // returns an array of people (user ids) you follow
   var getPeopleYouFollow = function(user_id) {
     return new Promise(function(resolve, reject) {
