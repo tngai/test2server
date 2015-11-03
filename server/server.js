@@ -645,9 +645,9 @@ app.get('/api/search/uri', function (req, res) {
   // sends back annotations based on uri
 });
 
-app.get('/api/search/users', function (req, res) {
-  // sends back annotations based on users
-});
+// app.get('/api/search/users', function (req, res) {
+//   // sends back annotations based on users
+// });
 
 
 
