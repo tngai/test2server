@@ -96,14 +96,17 @@ app.post('/api/users', function (req, res) {
       pg.connect(connectionString, function (err, client, done) {
         if (err) console.log('Connection error: ', err);
         client.query(checkQueries.checkPerson(full_name), function(err, result) {
-          console.log('here is the result ***** ', result)
-          if (result.rows[0].id) {
+          if(result.rows.length > 0) {
+            if (result.rows[0].id) {
             done();
-            req.body.user_id = result.rows[0].id;
-            res.set('Content-Type','application/JSON'); 
-            res.json(req.body);
+              req.body.user_id = result.rows[0].id;
+              res.set('Content-Type','application/JSON'); 
+              res.json(req.body);
+            }
+          
           }
-          resolve(result.rows[0].id);
+          
+          resolve(result.rows[0]);
         });
       });
     })
