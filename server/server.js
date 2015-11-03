@@ -250,11 +250,12 @@ app.get('/api/search',function (req, res) {
               }
             ]
           };        
-      }) 
+      })
+      } 
       returnObj.rows = finalAnnotationsObjects || [];
       res.set('Content-Type','application/JSON'); 
       res.json(returnObj);
-    }
+    
   });
 });
 });
