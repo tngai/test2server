@@ -269,12 +269,12 @@ app.get('/api/search',function (req, res) {
 app.put('/api/annotations/:id', function (req, res) {
   var annotation_id = req.params.id;
   var text = req.body.text;
-
+  var ann = req.body;
   pg.connect(connectionString, function(err, client, done) {
     if(err) console.log('Connection error: ', err);
     client.query(updateQueries.updateAnnotationText(annotation_id, text), function(err, result) {
       done();
-      req.body.annotation_id = annotation_id;
+      req.body.id = annotation_id;
       res.set('Content-Type','application/JSON'); 
       res.json(req.body);
     });
