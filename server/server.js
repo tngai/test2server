@@ -239,7 +239,7 @@ app.get('/api/search',function (req, res) {
           return {
             user_id: user_id,
             uri: uri,
-            id: annotation.id,
+            id: parseInt(annotation.id),
             text: annotation.text,
             quote: annotation.quote,
             ranges: [
