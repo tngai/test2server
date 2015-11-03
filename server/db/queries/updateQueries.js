@@ -26,9 +26,9 @@ var updateQueries = {
 					 "SET text = '" + text + "' " +
 					 "WHERE id = " + annotation_id + ";";
 	},
-	updateUserRow: function(newInfo){
+	updateUserRow: function(table,newInfo){
 		var info = [];
-		var rSTring;
+		var rString;
 		if(newInfo.pic_url) {
 			info.push(" pic_url='"+newInfo.pic_url+"'");
 		}
@@ -36,7 +36,7 @@ var updateQueries = {
 			info.push(" description='"+newInfo.description+"'");
 		}
 		info = info.join(',');
-		rString = "UPDATE Users SET "+info+ " WHERE id= '"+newInfo.user_id.toString()+"';"
+		rString = "UPDATE "+table+" SET "+info+ " WHERE id= '"+newInfo.user_id+"';"
 		return rString;		
 	}
 }
