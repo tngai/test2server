@@ -96,12 +96,13 @@ app.post('/api/users', function (req, res) {
       pg.connect(connectionString, function (err, client, done) {
         if (err) console.log('Connection error: ', err);
         client.query(checkQueries.checkPerson(full_name), function(err, result) {
-          if (result.rows[0].exists) {
+          if (result.rows[0].id) {
             done();
+            req.body.user_id = result.rows[0].id;
             res.set('Content-Type','application/JSON'); 
-            res.json('User with this name already exists');
+            res.json(req.body);
           }
-          resolve(result.rows[0].exists);
+          resolve(result.rows[0].id);
         });
       });
     })

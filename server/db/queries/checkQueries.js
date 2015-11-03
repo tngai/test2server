@@ -2,10 +2,7 @@
 var checkQueries = {
 
 	checkPerson: function (full_name) {
-		return "SELECT EXISTS (" + 
-						 "SELECT 1 FROM users " +
-						 "WHERE full_name = '" + full_name +"'" + 
-					 ");";
+		return "SELECT id FROM users WHERE full_name = '" + full_name + "';";
 	},
 
 	checkFacebookInfo: function (personTable, user_id, facebook_id, full_name, fb_pic, email) {
