@@ -578,55 +578,54 @@ app.get('/api/personalfeed', function (req, res) {
 });
 
 
-app.get('api/search/users', function(req, res) {
+app.get('/api/search/users', function(req, res) {
   var user_id = req.query.user_id;
   var full_name = req.query.full_name;
   console.log('user_id = ' + user_id);
   console.log('full_name = ' + full_name);
-  res.set('Content-Type','application/JSON'); 
-  res.json({user_id: user_id, full_name: full_name});
-  // var getFullNamePicURLAndID = function(full_name) {
-  //   return new Promise(function(resolve, reject) {
-  //     pg.connect(connectionString, function(err, client, done) {
-  //       if (err) console.error('Connection error: ', err);
-  //       client.query(selectQueries.selectFullNamePicURLAndID(full_name), function(err, result) {
-  //         done();
-  //         resolve(result.rows);
-  //       });
-  //     });
-  //   });
-  // }
 
-  // var getCheckIfYoureFollowingThem = function(follower_id) {
-  //   return new Promise(function(resolve, reject) {
-  //     pg.connect(connectionString, function(err, client, done) {
-  //       if (err) console.error('Connection error: ', err);
-  //       client.query(checkQueries.checkUserFollower(user_id, follower_id), function(err, result) {
-  //         done();
-  //         resolve(result.rows[0].exists);
-  //       });
-  //     });
-  //   });
-  // }
+  var getFullNamePicURLAndID = function(full_name) {
+    return new Promise(function(resolve, reject) {
+      pg.connect(connectionString, function(err, client, done) {
+        if (err) console.error('Connection error: ', err);
+        client.query(selectQueries.selectFullNamePicURLAndID(full_name), function(err, result) {
+          done();
+          resolve(result.rows);
+        });
+      });
+    });
+  }
 
-  // getFullNamePicURLAndID(full_name)
-  //   .then(function(people) {
-  //     return Promise.map(people, function(person) {
-  //       console.log('person toward the end: ', person)
-  //       return getCheckIfYoureFollowingThem(person.id)
-  //         .then(function(exists) {
-  //           return {
-  //             full_name: person.full_name,
-  //             pic_url: person.pic_url,
-  //             is_following: exists
-  //           }
-  //         })
-  //     })
-  //   })
-  //   .then(function(peopleArray) {
-  //     res.set('Content-Type','application/JSON'); 
-  //     res.json(peopleArray);
-  //   })
+  var getCheckIfYoureFollowingThem = function(follower_id) {
+    return new Promise(function(resolve, reject) {
+      pg.connect(connectionString, function(err, client, done) {
+        if (err) console.error('Connection error: ', err);
+        client.query(checkQueries.checkUserFollower(user_id, follower_id), function(err, result) {
+          done();
+          resolve(result.rows[0].exists);
+        });
+      });
+    });
+  }
+
+  getFullNamePicURLAndID(full_name)
+    .then(function(people) {
+      return Promise.map(people, function(person) {
+        console.log('person toward the end: ', person)
+        return getCheckIfYoureFollowingThem(person.id)
+          .then(function(exists) {
+            return {
+              full_name: person.full_name,
+              pic_url: person.pic_url,
+              is_following: exists
+            }
+          })
+      })
+    })
+    .then(function(peopleArray) {
+      res.set('Content-Type','application/JSON'); 
+      res.json(peopleArray);
+    })
 
 }); 
 
