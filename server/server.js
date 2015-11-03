@@ -78,7 +78,7 @@ var checkAndInsertIfNotExists = function (checkQuery, insertQuery, callback) {
 //------------------------------------------------------------------------------------//
 
 app.get('/',function(req,res){
-  res.end('connected!!');
+  res.end('connected!!!!!!');
 });
 
 app.post('/api/users', function (req, res) {
