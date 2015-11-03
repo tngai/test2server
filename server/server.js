@@ -698,7 +698,8 @@ app.get('/api/users/uri/annotations', function(req, res) {
           console.log('result after selectPersonIfPersonAnnotatedThisPage: ', result);
           console.log('person.user_id after selectPersonIfPersonAnnotatedThisPage: ', person.user_id);
           done();
-          resolve(result.rows[0].user_id);
+          if (result.rows.length > 0) resolve(true);
+          else resolve(false)
         })
       })
     })
