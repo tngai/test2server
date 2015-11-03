@@ -214,7 +214,7 @@ app.post('/api/annotations', function (req, res) {
       if (err) console.log('Connection error: ', err);
       client.query(insertQueries.insertAnnotation(uri_user_id, text, quote, start, end, startOffset, endOffset), function(err, result) {
         done()
-        ann.id = result.rows[0].id;
+        ann.id = parseInt(result.rows[0].id);
         res.set('Content-Type','application/JSON'); 
         res.json(ann);
         res.end();
