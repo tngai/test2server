@@ -306,7 +306,7 @@ app.get('/api/homefeed', function (req, res) {
  
   var getFullNameAndPicURL = function(person) {
     console.log('getFullNameAndPicURL person: ', person);
-    return new Promise(function(resolve, reject) {
+    return new Promise(function(resolve, reject) { 
       pg.connect(connectionString, function(err, client, done) {
         if (err) {
           console.log('Connection error: ', err); 
