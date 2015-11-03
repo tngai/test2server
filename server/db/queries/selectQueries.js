@@ -6,6 +6,16 @@ var selectQueries = {
 					 "WHERE full_name = '" + full_name + "';";
 	},
 
+	selectFullNameAndPicURLBasedOnID: function (user_id) {
+		return "SELECT id, full_name, pic_url FROM users " +
+						"WHERE user_id = " + user_id + ";";
+	},
+
+	selectFullNamePicURLAndID: function(full_name) {
+		return "SELECT full_name, pic_url FROM users " +
+						"WHERE full_name = '" + full_name + "';";
+	},
+
 	selectGeneralPost: function (uri, user_id) {
 		return "SELECT uu.general_post FROM uri, uri_users uu " +
 					 "WHERE uri.id = uu.uri_id AND uri.uri_link = '" + uri + "' " +

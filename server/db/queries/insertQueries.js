@@ -1,9 +1,9 @@
 
 var insertQueries = {
 
-	insertPerson: function (personTable, full_name, username, fb_pic, uploaded_pic, facebook_id, email, description) {
-		return "INSERT INTO " + personTable + " (full_name, username, fb_pic, uploaded_pic, facebook_id, email, description) " +
-					 "VALUES ('" + full_name + "', '" + username + "', '" + fb_pic + "', '" + uploaded_pic + "', " +
+	insertPerson: function (personTable, full_name, username, pic_url, uploaded_pic, facebook_id, email, description) {
+		return "INSERT INTO " + personTable + " (full_name, username, pic_url, uploaded_pic, facebook_id, email, description) " +
+					 "VALUES ('" + full_name + "', '" + username + "', '" + pic_url + "', '" + uploaded_pic + "', " +
 					 				 "'" + facebook_id + "', '" + email + "', '" + description + "') " + 
 					 "RETURNING id;";
 	},

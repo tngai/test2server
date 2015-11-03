@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Imitation Client</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+</head>
+<body>
+	<script>
+
+	  var annotationInfo = {
+	  	user_id: 39,
+	  	uri: 'www.lard.com',
+	  	title: 'that title',
+	  	text: 'Holy Ghost is beautiful',
+	  	quote: 'God is good',
+	  	ranges: [
+	  		{
+			  	start: 'someStart',
+			  	end: 'someEnd',
+			  	startOffset: 'someStartOffset',
+			  	endOffset: 'someEndOffset'
+			  }
+			  ]
+	  }
+
+	  var personInfo = {
+	  	full_name: 'lard man',
+	  	username: 'lard',
+	  	fb_pic: 'lardpic.com',
+	  	uploaded_pic: 'lardpic.img',
+	  	facebook_id: '253lard',
+	  	email: 'lard@gmail',
+	  	description: 'Jesus Christ is King'
+	  }
+
+	  var user_follower_info = {
+
+	  }
+
+	  // That POST request
+	  // $.ajax({
+	  //   url: 'http://test2server.herokuapp.com/api/annotations',
+	  //   type: 'POST',
+	  //   data: JSON.stringify(annotationInfo),
+	  //   contentType: 'application/json',
+	  //   success: function (data) {
+	  //     console.log('successful post! Here is what I got back: ', data);
+	  //   },
+	  //   error: function (data) {
+	  //     console.error('Sorry, chatterbox failed to create message');
+	  //   }
+	  // });
+
+
+	  // That GET request
+	  $.ajax({
+	    url: 'http://test2server.herokuapp.com/api/search/users?user_id=1&full_name=Jihoon%20Kim',
+	    type: 'GET',
+	    contentType: 'application/json',
+	    success: function (data) {
+	      console.log('successful get! And this is the data: ', data);
+	    },
+	    error: function (data) {
+	      console.error('My bad, chatterbox failed to read message');
+	    }
+	  });
+
+
+	  // That PUT request
+	  // $.ajax({
+	  //   url: 'http://test2server.herokuapp.com/api/annotations/32',
+	  //   type: 'PUT',
+	  //   data: JSON.stringify(annotationInfo),
+	  //   contentType: 'application/json',
+	  //   success: function (data) {
+	  //     console.log('successful update! Here is what I got back: ', data);
+	  //   },
+	  //   error: function (data) {
+	  //     console.error('Sorry, chatterbox failed to update message');
+	  //   }
+	  // });
+
+
+	  // That DELETE request
+	  // $.ajax({
+	  //   url: 'http://test2server.herokuapp.com/api/annotations/2',
+	  //   type: 'DELETE',
+	  //   contentType: 'application/json',
+	  //   success: function (data) {
+	  //     console.log('successful delete! Do not know if it returns anything, let us see: ', data);
+	  //   },
+	  //   error: function (data) {
+	  //     console.error('My bad, chatterbox failed to delete message');
+	  //   }
+	  // });
+
+	</script>
+</body>
+</html>

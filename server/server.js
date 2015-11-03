@@ -70,7 +70,7 @@ app.post('/api/users', function (req, res) {
 
   var full_name = req.body.full_name;
   var username = req.body.username;
-  var fb_pic = req.body.fb_pic;
+  var pic_url = req.body.pic_url;
   var uploaded_pic = req.body.uploaded_pic;
   var facebook_id = req.body.facebook_id;
   var email = req.body.email;
@@ -99,8 +99,8 @@ app.post('/api/users', function (req, res) {
   .then(function(exists) {
     if (!exists) {
       pg.connect(connectionString, function (err, client, done) {
-        client.query(insertQueries.insertPerson('users', full_name, username, fb_pic, uploaded_pic, facebook_id, email, description));
-        client.query(insertQueries.insertPerson('followers', full_name, username, fb_pic, uploaded_pic, facebook_id, email, description), function(err, result) {
+        client.query(insertQueries.insertPerson('users', full_name, username, pic_url, uploaded_pic, facebook_id, email, description));
+        client.query(insertQueries.insertPerson('followers', full_name, username, pic_url, uploaded_pic, facebook_id, email, description), function(err, result) {
           done();
           req.body.user_id = result.rows[0].id;
           res.set('Content-Type','application/JSON'); 
@@ -303,15 +303,15 @@ app.get('/api/homefeed', function (req, res) {
     });
   };
  
-  var getFullNameAndFBPic = function(person) {
-    console.log('getFullNameAndFBPic person: ', person);
+  var getFullNameAndPicURL = function(person) {
+    console.log('getFullNameAndPicURL person: ', person);
     return new Promise(function(resolve, reject) {
       pg.connect(connectionString, function(err, client, done) {
         if (err) {
           console.log('Connection error: ', err);
           return reject(err);
         }
-        client.query(selectQueries.selectFullNameAndFBPic(person.user_id), function(err, result) {
+        client.query(selectQueries.selectFullNameAndPicURLBasedOnID(person.user_id), function(err, result) {
           done();
           resolve(result.rows[0]);
         });
@@ -417,7 +417,7 @@ app.get('/api/homefeed', function (req, res) {
   var assemblePersonInfoWithArticlesObj = function(person) {
     // Promise.all these two promises
     return Promise.all([
-      getFullNameAndFBPic(person),
+      getFullNameAndPicURL(person),
       getUriObjsOfPerson(person)
         .then(function(uriObjsArray) {
           // iterating through each uriObjsArray of each user ID
@@ -432,7 +432,7 @@ app.get('/api/homefeed', function (req, res) {
         var articleObjsOfPerson = fullNameFBPicAndUriObjs[1];
         return {
           full_name: fullNameAndFBPicObj.full_name,
-          fb_pic: fullNameAndFBPicObj.fb_pic,
+          pic_url: fullNameAndFBPicObj.pic_url,
           articles: articleObjsOfPerson
         };
       })
@@ -578,14 +578,59 @@ app.get('/api/personalfeed', function (req, res) {
 });
 
 
+app.get('api/search/users', function(req, res) {
+  var user_id = req.query.user_id;
+  var full_name = req.query.full_name;
+  console.log('user_id = ' + user_id);
+  console.log('full_name = ' + full_name);
 
+  var getFullNamePicURLAndID = function(full_name) {
+    return new Promise(function(resolve, reject) {
+      pg.connect(connectionString, function(err, client, done) {
+        if (err) console.error('Connection error: ', err);
+        client.query(selectQueries.selectFullNamePicURLAndID(full_name), function(err, result) {
+          done();
+          resolve(result.rows);
+        });
+      });
+    });
+  }
 
+  var getCheckIfYoureFollowingThem = function(follower_id) {
+    return new Promise(function(resolve, reject) {
+      pg.connect(connectionString, function(err, client, done) {
+        if (err) console.error('Connection error: ', err);
+        client.query(checkQueries.checkUserFollower(user_id, follower_id), function(err, result) {
+          done();
+          resolve(result.rows[0].exists);
+        });
+      });
+    });
+  }
 
+  getFullNamePicURLAndID(full_name)
+    .then(function(people) {
+      return Promise.map(people, function(person) {
+        console.log('person toward the end: ', person)
+        return getCheckIfYoureFollowingThem(person.id)
+          .then(function(exists) {
+            return {
+              full_name: person.full_name,
+              pic_url: person.pic_url,
+              is_following: exists
+            }
+          })
+      })
+    })
+    .then(function(peopleArray) {
+      res.set('Content-Type','application/JSON'); 
+      res.json(peopleArray);
+    })
 
-app.get('/api/personalfeed', function (req, res) {
-  var body = req.body;
+}); 
 
-});
+// selectFullNameAndPicURL
+// checkUserFollower
 
 
 app.get('api/personalfeed/share', function (req, res) {

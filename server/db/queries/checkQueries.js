@@ -5,13 +5,13 @@ var checkQueries = {
 		return "SELECT id FROM users WHERE full_name = '" + full_name + "';";
 	},
 
-	checkFacebookInfo: function (personTable, user_id, facebook_id, full_name, fb_pic, email) {
+	checkFacebookInfo: function (personTable, user_id, facebook_id, full_name, pic_url, email) {
 		return "SELECT EXISTS (" + 
 						 "SELECT 1 FROM " + personTable + " " +
 						 "WHERE id = " + user_id + " " +
 						 "AND full_name = '" + full_name + "' " + 
 						 "AND facebook_id = '" + facebook_id + "' " +
-						 "AND fb_pic = '" + fb_pic + "' " +
+						 "AND pic_url = '" + pic_url + "' " +
 						 "AND email = '" + email + "'" +
 					 ");";
 	},

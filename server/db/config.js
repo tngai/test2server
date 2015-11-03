@@ -4,7 +4,7 @@ var users = "CREATE TABLE IF NOT EXISTS users ( " +
 							"facebook_id TEXT, " +
 							"full_name TEXT, " +
 							"username TEXT, " +
-							"fb_pic TEXT, " +
+							"pic_url TEXT, " +
 							"uploaded_pic TEXT, " +
 							"email TEXT, " +
 						 	"description TEXT " +
@@ -15,7 +15,7 @@ var followers = "CREATE TABLE IF NOT EXISTS followers ( " +
 									"facebook_id TEXT, " +
 									"full_name TEXT, " +
 									"username TEXT, " +
-									"fb_pic TEXT, " +
+									"pic_url TEXT, " +
 									"uploaded_pic TEXT, " +
 									"email TEXT, " +
 									"description TEXT " +
