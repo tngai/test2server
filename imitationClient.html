@@ -34,14 +34,15 @@
 	  }
 
 	  var user_follower_info = {
-
+	  	user_id: 1,
+	  	follower_id: 6
 	  }
 
 	  // That POST request
 	  // $.ajax({
-	  //   url: 'http://test2server.herokuapp.com/api/annotations',
+	  //   url: 'http://test2server.herokuapp.com/api/users/follow',
 	  //   type: 'POST',
-	  //   data: JSON.stringify(annotationInfo),
+	  //   data: JSON.stringify(user_follower_info),
 	  //   contentType: 'application/json',
 	  //   success: function (data) {
 	  //     console.log('successful post! Here is what I got back: ', data);
@@ -54,7 +55,7 @@
 
 	  // That GET request
 	  $.ajax({
-	    url: 'http://test2server.herokuapp.com/api/search/users?user_id=1&full_name=Jihoon%20Kim',
+	    url: 'http://test2server.herokuapp.com/api/homefeed?user_id=4',
 	    type: 'GET',
 	    contentType: 'application/json',
 	    success: function (data) {

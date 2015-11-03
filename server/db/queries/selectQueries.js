@@ -7,8 +7,8 @@ var selectQueries = {
 	},
 
 	selectFullNameAndPicURLBasedOnID: function (user_id) {
-		return "SELECT full_name, pic_url FROM users " +
-						"WHERE user_id = " + user_id + ";";
+		return "SELECT id, full_name, pic_url FROM users " +
+						"WHERE id = " + user_id + ";";
 	},
 
 	selectFullNamePicURLAndID: function(full_name) {
@@ -113,31 +113,14 @@ var selectQueries = {
 		// I assume also that this also will be based on time you saved
 	},
 
-	selectYouIfYouAnnotatedThisPage: function (uri, user_id) {
+	selectPersonIfPersonAnnotatedThisPage: function (uri, user_id) {
 		return "SELECT uu.user_id " +
 					 "FROM uri, uri_users uu " +
 					 "WHERE uu.user_id = " + user_id + " " +
  					 "AND uri.id = uu.uri_id " +
 					 "AND uri.uri_link = '" + uri + "';";
-	},
-
-
-	// these will probably not be single helper queries anymore
-	selectURIsOfPeopleYouFollow: function (fullname) {
-
-		/***** selectPeopleYouFollow(fullname) THEN selectURIs(eachName) on each person returned****/ 
-		// (I actually can't do it the other way because I never made a uri_followers table)
-
-
-		// based on time (so updated_at will be important) (probably on the uri_users table)
-	},
-
-	selectWhoOutOfWhoYouFollowAlsoAnnotatedThisPage: function (fullname, uri) {
-
-		/*** selectPeopleYouFollow(fullname) THEN didYouAnnotateThisPage(eachName, uri) on each person returned ***/
-		// again, I don't have a uri_followers page, so there is an issue
-
 	}
+
 
 // And after I check for sure that this works, I'm going to create all the insert functions
 }
