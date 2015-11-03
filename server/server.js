@@ -309,7 +309,7 @@ app.get('/api/homefeed', function (req, res) {
     return new Promise(function(resolve, reject) {
       pg.connect(connectionString, function(err, client, done) {
         if (err) {
-          console.log('Connection error: ', err);
+          console.log('Connection error: ', err); 
           return reject(err);
         }
         client.query(selectQueries.selectFullNameAndPicURLBasedOnID(person.user_id), function(err, result) {
