@@ -580,6 +580,7 @@ app.get('/api/personalfeed', function (req, res) {
     });
 });
 
+
   app.post('/api/user/update', function(req,res){
     var userInfo = req.body;
     var updateUserFollowerRow = function(table,infoObj) {
@@ -603,6 +604,30 @@ app.get('/api/personalfeed', function (req, res) {
    });
 
   });
+
+
+app.post('/api/users/update', function(req,res){
+  var userInfo = req.body;
+  var updateUserRow = function(infoObj) {
+    return new Promise(function(resolve,reject){
+      pg.connect(connectionString, function(err,client,done){
+        if (err) console.error('Connection error: ', err);
+        client.query(updateQueries.updateUserRow(infoObj), function(err,result) {
+          if (err) console.error('Connection error: ', err);
+          console.log('the result in the query ', result)
+          done();
+          resolve(result.rows);
+        });
+      }) 
+    });
+  };
+
+  updateUserRow(userInfo).then(function(result) {
+    res.set('Content-Type','application/JSON'); 
+    res.json(userInfo);     
+  })
+});
+
 
 app.get('/api/search/users', function(req, res) {
   var user_id = req.query.user_id;
@@ -690,13 +715,10 @@ app.post('/api/users/follow', function(req, res) {
 
 })
 
-app.get('/api/users/uri/annotations', function(req, res) {
+
+app.get('/api/users/uri/annotations', function (req, res) {
   var user_id = req.query.user_id; 
   var uri = req.query.uri;
-});
-
-app.get('/api/personalfeed/share', function (req, res) {
-  var body = req.body;
 
 
   var getPeopleYouFollow = function(user_id) {
