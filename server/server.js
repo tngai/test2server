@@ -298,7 +298,7 @@ app.delete('/api/annotations/:id',function (req, res) {
           console.error('Connection error: ', err);
           reject(err);
         }
-        client.query(checkQueries.)
+        
 
       })
     })
