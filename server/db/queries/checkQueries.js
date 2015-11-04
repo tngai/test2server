@@ -53,7 +53,9 @@ var checkQueries = {
 					 ");";
 	},
 
-	checkIfAnyAnnotationsForThisURIUser: function ()
+	checkIfAnyAnnotationsForThisURIUser: function () {
+		
+	}
 	
 }
 
