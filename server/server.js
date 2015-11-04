@@ -249,10 +249,8 @@ app.get('/api/search',function (req, res) {
       }
       res.set('Content-Type','application/JSON'); 
       res.json(returnObj);
+    });
   });
-
-
-});
 });
 
 
@@ -272,17 +270,47 @@ app.put('/api/annotations/:id', function (req, res) {
 });
 
 
+
+
+
 app.delete('/api/annotations/:id',function (req, res) {
   var annotation_id = req.params.id;
 
-  pg.connect(connectionString, function(err, client, done) {
-    if (err) console.log('Connection error: ', err);
-    client.query(deleteQueries.deleteAnnotation(annotation_id), function(err, result) {
-      done();
-      res.sendStatus(204);
+  var deleteThatAnnotation = function(annotation_id) {
+    return new Promise(function(resolve, reject) {
+      pg.connect(connectionString, function(err, client, done) {
+        if (err) console.log('Connection error: ', err);
+        client.query(deleteQueries.deleteAnnotation(annotation_id), function(err, result) {
+          done();
+          if (!result) res.sendStatus(404);
+          if (result.rows.length === 0) res.sendStatus(404);
+          resolve(result.rows[0].uri_user_id);
+        })
+      });
+    });
+  }
+
+  var checkIfAnnotationsForThisURIUserIsEmpty = function(uri_user_id) {
+    return new Promise(function(resolve, reject) {
+      pg.connect(connectionString, function(err, client, done) {
+        if (err) {
+          done();
+          console.error('Connection error: ', err);
+          reject(err);
+        }
+        client.query(checkQueries.)
+
+      })
     })
-  });
+  }
+
+
 });
+
+
+
+
+
 
 
 app.get('/api/homefeed', function (req, res) {
@@ -304,8 +332,8 @@ app.get('/api/homefeed', function (req, res) {
     });
   };
  
-  var getFullNameAndPicURL = function(person) {
-    console.log('getFullNameAndPicURL person: ', person);
+  var getFullNamePicURLAndID = function(person) {
+    console.log('getFullNamePicURLAndID person: ', person);
     return new Promise(function(resolve, reject) { 
       pg.connect(connectionString, function(err, client, done) {
         if (err) {
@@ -313,7 +341,7 @@ app.get('/api/homefeed', function (req, res) {
           return reject(err);
         }
         client.query(selectQueries.selectFullNameAndPicURLBasedOnID(person.user_id), function(err, result) {
-          console.log('result in getFullNameAndPicURL: ', result);
+          console.log('result in getFullNamePicURLAndID: ', result);
           console.log('this was person.user_id: ', person.user_id);
           done();
           resolve(result.rows[0]);
@@ -420,7 +448,7 @@ app.get('/api/homefeed', function (req, res) {
   var assemblePersonInfoWithArticlesObj = function(person) {
     // Promise.all these two promises
     return Promise.all([
-      getFullNameAndPicURL(person),
+      getFullNamePicURLAndID(person),
       getUriObjsOfPerson(person)
         .then(function(uriObjsArray) {
           // iterating through each uriObjsArray of each user ID
@@ -434,6 +462,7 @@ app.get('/api/homefeed', function (req, res) {
         var fullNameAndFBPicObj = fullNameFBPicAndUriObjs[0];
         var articleObjsOfPerson = fullNameFBPicAndUriObjs[1];
         return {
+          user_id: fullNameAndFBPicObj.id,
           full_name: fullNameAndFBPicObj.full_name,
           pic_url: fullNameAndFBPicObj.pic_url,
           articles: articleObjsOfPerson
@@ -581,6 +610,23 @@ app.get('/api/personalfeed', function (req, res) {
 });
 
 
+app.put('/api/personalfeed/share', function(req, res) {
+  var user_id = req.query.user_id;
+  var uri = req.query.uri;
+  var is_shared = req.query.is_shared;
+
+  pg.connect(connectionString, function(err, client, done) {
+    if (err) console.error('Connection error: ', err);
+    client.query(updateQueries.updateSharedStatusTo(is_shared, uri, user_id), function(err, result)  {
+      done();
+      if (!result) res.sendStatus(404)
+      else if (result.rows.length === 0) res.sendStatus(404);
+      else res.sendStatus(204);
+    })
+  })
+})
+
+
 app.post('/api/users/update', function(req,res){
   var userInfo = req.body;
   var updateUserRow = function(infoObj) {
@@ -689,6 +735,20 @@ app.post('/api/users/follow', function(req, res) {
 
 })
 
+app.delete('/api/users/unfollow', function(req, res) {
+  var user_id = req.query.user_id;
+  var follower_id = req.query.follower_id;
+
+  pg.connect(connectionString, function(err, client, done) {
+    if (err) console.error('Connection error: ', err);
+    client.query(deleteQueries.deleteUserFollowerRelationship(user_id, follower_id), function(err, result) {
+      done();
+      if (!result) res.sendStatus(404);
+      else res.sendStatus(204);
+    })
+  });
+})
+
 
 app.get('/api/users/uri/annotations', function (req, res) {
   var user_id = req.query.user_id; 
@@ -729,7 +789,7 @@ app.get('/api/users/uri/annotations', function (req, res) {
   }
 
   var getFullNamePicURLAndID = function(person) {
-    console.log('getFullNameAndPicURL person: ', person);
+    console.log('getFullNamePicURLAndID person: ', person);
     return new Promise(function(resolve, reject) {
       pg.connect(connectionString, function(err, client, done) {
         if (err) {
@@ -762,7 +822,6 @@ app.get('/api/users/uri/annotations', function (req, res) {
       res.set('Content-Type','application/JSON'); 
       res.json(fullNamesPicURLsAndIDsOfWhoAnnotatedPage);
     })
-
 
 })
 

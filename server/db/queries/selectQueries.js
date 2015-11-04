@@ -104,7 +104,7 @@ var selectQueries = {
 	},
 
 	selectArchivedURIs: function (user_id) {
-		return "SELECT uri.uri_link " +
+		return "SELECT uri.uri_link, uri.title " +
 					 "FROM uri, uri_users uu " +
 					 "WHERE uu.user_id = " + user_id + " " +
 					 "AND uri.id = uu.uri_id " +

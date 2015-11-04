@@ -51,7 +51,9 @@ var checkQueries = {
 						 "AND uri.id = uuf.uri_id " +
 						 "AND uri.uri_link = '" + uri + "' " +
 					 ");";
-	}
+	},
+
+	checkIfAnyAnnotationsForThisURIUser: function ()
 	
 }
 

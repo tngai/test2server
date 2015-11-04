@@ -11,7 +11,7 @@ var updateQueries = {
 		return "UPDATE uri_users " +
 					 "SET is_shared = " + bool + " " +
 					 "WHERE uri_id = (SELECT id FROM uri WHERE uri_link = '" + uri + "') " +
-					 "AND user_id = " + user_id + ";";
+					 "AND user_id = " + user_id + " RETURNING is_shared;";
 	},
 
 	updateGeneralPost: function (uri, user_id, generalPost) {
@@ -26,9 +26,10 @@ var updateQueries = {
 					 "SET text = '" + text + "' " +
 					 "WHERE id = " + annotation_id + ";";
 	},
+	
 	updateUserRow: function(newInfo){
 		var info = [];
-		var rSTring;
+		var rString;
 		if(newInfo.pic_url) {
 			info.push(" pic_url='"+newInfo.pic_url+"'");
 		}
@@ -36,7 +37,7 @@ var updateQueries = {
 			info.push(" description='"+newInfo.description+"'");
 		}
 		info = info.join(',');
-		rString = "UPDATE Users SET "+info+ " WHERE id= '"+newInfo.user_id.toString()+"';"
+		rString = "UPDATE users SET "+info+ " WHERE id= '"+newInfo.user_id.toString()+"';"
 		return rString;		
 	}
 }
