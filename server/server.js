@@ -610,6 +610,7 @@ app.get('/api/personalfeed', function (req, res) {
 });
 
 
+
 app.put('/api/personalfeed/share', function(req, res) {
   var user_id = req.query.user_id;
   var uri = req.query.uri;
@@ -625,6 +626,32 @@ app.put('/api/personalfeed/share', function(req, res) {
     })
   })
 })
+
+
+  app.post('/api/users/update', function(req,res){
+    var userInfo = req.body;
+    var updateUserFollowerRow = function(table,infoObj) {
+      return new Promise(function(resolve,reject){
+        pg.connect(connectionString, function(err,client,done){
+          if (err) console.error('Connection error: ', err);
+          client.query(updateQueries.updateUserRow(table, infoObj), function(err,result) {
+            if (err) console.error('Connection error: ', err);
+            console.log('the result in the query ', result)
+            done();
+            resolve(result.rows);
+          });
+        }) 
+      });
+    };
+   var userFollowerArr = [updateUserFollowerRow("users",userInfo), updateUserFollowerRow("followers",userInfo)];
+   
+   Promise.all(userFollowerArr).then(function() {
+    res.set('Content-Type','application/JSON'); 
+    res.json(userInfo);
+   });
+
+  });
+
 
 
 app.post('/api/users/update', function(req,res){
@@ -648,6 +675,7 @@ app.post('/api/users/update', function(req,res){
     res.json(userInfo);     
   })
 });
+
 
 app.get('/api/search/users', function(req, res) {
   var user_id = req.query.user_id;
@@ -825,6 +853,67 @@ app.get('/api/users/uri/annotations', function (req, res) {
 
 })
 
+
+app.get('/api/personalfeed/share', function (req, res) {
+  var body = req.body;
+
+});
+
+  app.post('/api/uri/gp', function(req,res) {
+    var gpObj = req.body;
+    var uri = req.body.uri;
+    var user_id = req.body.user_id;
+    var generalPost = req.body.generalPost;
+
+    var updateGP = function(uri, user_id, generalPost) {
+      return new Promise(function(resolve,reject){
+        pg.connect(connectionString, function(err, client, done) {
+          if (err) {
+            console.log('Connection error: ', err);
+            return reject(err);
+          }
+          client.query(updateQueries.updateGeneralPost(uri, user_id, generalPost), function(err, result) {
+            if(err) console.log(err);
+            done();
+            resolve(result.rows[0]);
+          });
+        });
+      });
+      }; 
+    updateGP(uri, user_id, generalPost).then(function(){
+      res.set('Content-Type','application/JSON'); 
+      res.json(gpObj);  
+    });
+  });
+
+  app.post('/api/comments', function(req,res) {
+    var uri = req.body.uri;
+    var user_id = req.body.user_id;
+    var follower_id = req.body.follower_id;
+    var message = req.body.message;
+
+    var insertComments =  function(uri,user_id,follower_id,message){
+      return new Promise(function(resolve,reject){
+        pg.connect(connectionString,function(err,client,done) {
+          if (err) {
+            console.error('Connection error: ', err);
+            return reject(err);
+          }
+          client.query(insertQueries.insertGeneralPostComment(uri, user_id, follower_id, message), function(err,result){
+            if(err) console.log('connection error' ,err);
+            done()
+            resolve(result.row)
+          });  
+        });  
+      })
+    };
+  
+    insertComments(uri, user_id, follower_id, message)
+    .then(function(data){
+      res.set('Content-Type','application/JSON'); 
+      res.json(req.body);
+    })
+});
 
 
 
