@@ -49,5 +49,10 @@
     "react-router-component": "^0.26.1",
     "reactify": "^1.1.1",
     "vinyl-source-stream": "^1.1.0"
+  },
+  "devDependencies": {
+    "chai": "^3.4.0",
+    "mocha": "^2.3.3",
+    "request": "^2.65.0"
   }
 }
