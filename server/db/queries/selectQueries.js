@@ -6,6 +6,12 @@ var selectQueries = {
 					 "WHERE full_name = '" + full_name + "';";
 	},
 
+	selectIsSharedProperty: function (uri, user_id) {
+		return "SELECT uu.is_shared FROM uri, uri_users uu " +
+					 "WHERE uri.id = uu.uri_id AND uri.uri_link = '" + uri + "' " +
+					 "AND uu.user_id = " + user_id + ";";
+	},
+
 	selectFullNameAndPicURLBasedOnID: function (user_id) {
 		return "SELECT id, full_name, pic_url FROM users " +
 						"WHERE id = " + user_id + ";";
@@ -104,7 +110,7 @@ var selectQueries = {
 	},
 
 	selectArchivedURIs: function (user_id) {
-		return "SELECT uri.uri_link " +
+		return "SELECT uri.uri_link, uri.title " +
 					 "FROM uri, uri_users uu " +
 					 "WHERE uu.user_id = " + user_id + " " +
 					 "AND uri.id = uu.uri_id " +
