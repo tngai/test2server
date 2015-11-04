@@ -675,20 +675,47 @@ app.put('/api/personalfeed/share', function(req, res) {
   var uri = req.query.uri;
   var is_shared = req.query.is_shared;
 
-  pg.connect(connectionString, function(err, client, done) {
-    if (err) console.error('Connection error: ', err);
-    client.query(updateQueries.updateSharedStatusTo(is_shared, uri, user_id), function(err, result)  {
-      done();
-      if (!result) res.sendStatus(404)
-      else if (result.rows.length === 0) res.sendStatus(404);
-      else res.sendStatus(204);
+  var updateArticlesSharedStatusTo = function(is_shared, uri, user_id) {
+    return new Promise(function(resolve, reject) {
+      pg.connect(connectionString, function(err, client, done) {
+        if (err) {
+          console.error('Connection error: ', err);
+          resolve(err);
+        }
+        client.query(updateQueries.updateSharedStatusTo(is_shared, uri, user_id), function(err, result)  {
+          done();
+          if (!result) res.sendStatus(404)
+          else if (result.rows.length === 0) res.sendStatus(404);
+          else resolve(result.rows[0].id);
+        })
+      })
     })
+  }
+
+  var updateTimestampOnArticle = function(uri_user_id) {
+    pg.connect(connectionString, function(resolve, reject) {
+      if (err) console.error('Connection error: ', err);
+      client.query(updateQueries.updateTimestampOnURIUser(uri_user_id), function(err, result) {
+        done();
+        if (!result) res.sendStatus(404);
+        else if (result.rows.length === 0) res.sendStatus(404);
+        else res.sendStatus(204);
+      })
+    })
+  }
+
+  updateArticlesSharedStatusTo(is_shared, uri, user_id) 
+  .then(updateTimestampOnArticle)
+  .catch(function(err) {
+    console.error('Error in updating the shared status of article: ', err);
   })
+
 })
 
 
   app.post('/api/users/update', function(req,res){
     var userInfo = req.body;
+
     var updateUserFollowerRow = function(table,infoObj) {
       return new Promise(function(resolve,reject){
         pg.connect(connectionString, function(err,client,done){
@@ -912,11 +939,6 @@ app.get('/api/users/uri/annotations', function (req, res) {
 
 })
 
-
-app.get('/api/personalfeed/share', function (req, res) {
-  var body = req.body;
-
-});
 
   app.post('/api/uri/gp', function(req,res) {
     var gpObj = req.body;

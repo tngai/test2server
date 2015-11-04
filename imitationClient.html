@@ -54,32 +54,32 @@
 
 
 	  // That GET request
-	  $.ajax({
-	    url: 'http://test2server.herokuapp.com/api/homefeed?user_id=4',
-	    type: 'GET',
-	    contentType: 'application/json',
-	    success: function (data) {
-	      console.log('successful get! And this is the data: ', data);
-	    },
-	    error: function (data) {
-	      console.error('My bad, chatterbox failed to read message');
-	    }
-	  });
+	  // $.ajax({
+	  //   url: 'http://test2server.herokuapp.com/api/homefeed?user_id=4',
+	  //   type: 'GET',
+	  //   contentType: 'application/json',
+	  //   success: function (data) {
+	  //     console.log('successful get! And this is the data: ', data);
+	  //   },
+	  //   error: function (data) {
+	  //     console.error('My bad, chatterbox failed to read message');
+	  //   }
+	  // });
 
 
 	  // That PUT request
-	  // $.ajax({
-	  //   url: 'http://test2server.herokuapp.com/api/annotations/32',
-	  //   type: 'PUT',
-	  //   data: JSON.stringify(annotationInfo),
-	  //   contentType: 'application/json',
-	  //   success: function (data) {
-	  //     console.log('successful update! Here is what I got back: ', data);
-	  //   },
-	  //   error: function (data) {
-	  //     console.error('Sorry, chatterbox failed to update message');
-	  //   }
-	  // });
+	  $.ajax({
+	    url: 'http://test2server.herokuapp.com/api/personalfeed/share?user_id=4&uri=https://www.propublica.org/article/terror-in-little-saigon-vietnam-american-journalists-murdered&is_shared=true',
+	    type: 'PUT',
+	    data: JSON.stringify(annotationInfo),
+	    contentType: 'application/json',
+	    success: function (data) {
+	      console.log('successful update! Here is what I got back: ', data);
+	    },
+	    error: function (data) {
+	      console.error('Sorry, chatterbox failed to update message');
+	    }
+	  });
 
 
 	  // That DELETE request

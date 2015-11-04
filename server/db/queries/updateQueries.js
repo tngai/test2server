@@ -11,8 +11,14 @@ var updateQueries = {
 		return "UPDATE uri_users " +
 					 "SET is_shared = " + bool + " " +
 					 "WHERE uri_id = (SELECT id FROM uri WHERE uri_link = '" + uri + "') " +
-					 "AND user_id = " + user_id + " RETURNING is_shared;";
+					 "AND user_id = " + user_id + " RETURNING id;";
 	},
+
+	updateTimestampOnURIUser: function (uri_user_id) {
+		return "UPDATE uri_users " +
+					 "SET updated_at = NOW() " +
+					 "WHERE id = " + uri_user_id + " RETURNING id;";
+	}
 
 	updateGeneralPost: function (uri, user_id, generalPost) {
 		return "UPDATE uri_users " +
