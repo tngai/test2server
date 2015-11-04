@@ -18,7 +18,7 @@ var updateQueries = {
 		return "UPDATE uri_users " +
 					 "SET updated_at = NOW() " +
 					 "WHERE id = " + uri_user_id + " RETURNING id;";
-	}
+	},
 
 	updateGeneralPost: function (uri, user_id, generalPost) {
 		return "UPDATE uri_users " +
