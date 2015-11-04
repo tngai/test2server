@@ -413,12 +413,28 @@ app.get('/api/homefeed', function (req, res) {
       });
     });
   };
+
+  var getIsSharedProperty = function(uri, userId) {
+    return new Promise(function(resolve, reject) {
+      pg.connect(connectionString, function(err, client, done) {
+        if (err) {
+          console.error('Connection error: ', err);
+          return reject(err);
+        }
+        client.query(selectQueries.selectIsSharedProperty(uri.uri_link, userId), function(err, result) {
+          done();
+          resolve(result.rows[0].is_shared);
+        })
+      });
+    })
+  }
  
   var getGeneralPostCommentsLikes = function(uri, userId) {
     return Promise.all([
       getGeneralPost(uri, userId),
       getCommentsOnGeneralPost(uri, userId),
-      getLikesOnGeneralPost(uri, userId)
+      getLikesOnGeneralPost(uri, userId),
+      getIsSharedProperty(uri, userId)
     ]);
   };
  
@@ -426,10 +442,12 @@ app.get('/api/homefeed', function (req, res) {
     var generalPost = generalPostCommentsLikesArray[0];
     var comments = generalPostCommentsLikesArray[1];
     var likes = generalPostCommentsLikesArray[2];
+    var shared = generalPostCommentsLikesArray[3];
     return {
       uri_link: uriObj.uri_link,
       title: uriObj.title,
       general_post: generalPost,
+      is_shared: shared,
       commentsOnGeneralPost: comments,
       likes: likes
     };
