@@ -697,6 +697,8 @@ app.put('/api/personalfeed/share', function(req, res) {
       if (err) console.error('Connection error: ', err);
       client.query(updateQueries.updateTimestampOnURIUser(uri_user_id), function(err, result) {
         done();
+        console.log('what is uri_user_id: ', uri_user_id)
+        console.log('what is "result" in updateTimestampOnArticle: ', result);
         if (!result) res.sendStatus(404);
         else if (result.rows.length === 0) res.sendStatus(404);
         else res.sendStatus(204);
