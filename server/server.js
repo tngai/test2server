@@ -495,6 +495,7 @@ app.get('/api/homefeed', function (req, res) {
   };
  
   var convertUriObjToArticleObj = function(uriObj, userId) {
+    console.log('show me the uriObj: ', uriObj)
     return getGeneralPostCommentsLikes(uriObj, userId)
       .then(function(generalPostCommentsLikesArray) {
         return assembleArticleObj(generalPostCommentsLikesArray, uriObj);
