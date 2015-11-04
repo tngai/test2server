@@ -489,6 +489,7 @@ app.get('/api/homefeed', function (req, res) {
       title: uriObj.title,
       general_post: generalPost,
       is_shared: shared,
+      updated_at: uriObj.updated_at,
       commentsOnGeneralPost: comments,
       likes: likes
     };
