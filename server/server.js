@@ -270,9 +270,6 @@ app.put('/api/annotations/:id', function (req, res) {
 });
 
 
-
-
-
 app.delete('/api/annotations/:id',function (req, res) {
   var annotation_id = req.params.id;
 
@@ -282,9 +279,13 @@ app.delete('/api/annotations/:id',function (req, res) {
         if (err) console.log('Connection error: ', err);
         client.query(deleteQueries.deleteAnnotation(annotation_id), function(err, result) {
           done();
-          if (!result) res.sendStatus(404);
-          if (result.rows.length === 0) res.sendStatus(404);
-          resolve(result.rows[0].uri_user_id);
+          if (!result) {
+            console.error('Error in query: ', err);
+            res.sendStatus(404);
+            reject(err);
+          }
+          else if (result.rows.length === 0) res.sendStatus(404);
+          else resolve(result.rows[0].uri_user_id);
         })
       });
     });
@@ -298,17 +299,57 @@ app.delete('/api/annotations/:id',function (req, res) {
           console.error('Connection error: ', err);
           reject(err);
         }
-        
-
+        client.query(checkQueries.checkIfAnyAnnotationsForThisURIUser(uri_user_id), function(err, result) {
+          done();
+          if (!result) {
+            console.error('Error in query: ', err);
+            res.sendStatus(404);
+            reject(err);
+          }
+          else {
+            var obj = {
+              uri_user_id: uri_user_id,
+              exists: result.rows[0].exists
+            }  
+            resolve(obj);
+          }
+        })
       })
     })
   }
 
+  var deleteURIUserOrNot = function(obj) {
+    if (!obj.exists) {
+      pg.connect(connectionString, function(err, client, done) {
+        if (err) {
+          done();
+          console.error('Connection error: ', err);
+          reject(err);
+        }
+        client.query(deleteQueries.deleteURIUser(obj.uri_user_id), function(err, result) {
+          done();
+          if (!result) {
+            console.error('Error in query: ', err);
+            res.sendStatus(404);
+            reject(err);
+          }
+          else {
+            res.sendStatus(204);
+          }
+        })
+      });
+    }
+    res.sendStatus(204);
+  }
+
+  deleteThatAnnotation(annotation_id)
+    .then(checkIfAnnotationsForThisURIUserIsEmpty)
+    .then(deleteURIUserOrNot)
+    .catch(function(err) {
+      console.error('Error in deleting annotation: ', err);
+    })
 
 });
-
-
-
 
 
 
