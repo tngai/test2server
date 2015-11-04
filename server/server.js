@@ -825,6 +825,34 @@ app.get('/api/personalfeed/share', function (req, res) {
     });
   });
 
+  app.post('/api/comments', function(req,res) {
+    var uri = req.body.uri;
+    var user_id = req.body.user_id;
+    var follower_id = req.body.follower_id;
+    var message = req.body.message;
+
+    var insertComments =  function(uri,user_id,follower_id,message){
+      return new Promise(function(resolve,reject){
+        pg.connect(connectionString,function(err,client,done) {
+          if (err) {
+            console.error('Connection error: ', err);
+            return reject(err);
+          }
+          client.query(insertQueries.insertGeneralPostComment(uri, user_id, follower_id, message), function(err,result){
+            if(err) console.log('connection error' ,err);
+            done()
+            resolve(result.row)
+          });  
+        });  
+      })
+    };
+  
+    insertComments(uri, user_id, follower_id, message)
+    .then(function(data){
+      res.set('Content-Type','application/JSON'); 
+      res.json(req.body);
+    })
+});
 
 
 
