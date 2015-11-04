@@ -270,9 +270,6 @@ app.put('/api/annotations/:id', function (req, res) {
 });
 
 
-
-
-
 app.delete('/api/annotations/:id',function (req, res) {
   var annotation_id = req.params.id;
 
@@ -282,9 +279,13 @@ app.delete('/api/annotations/:id',function (req, res) {
         if (err) console.log('Connection error: ', err);
         client.query(deleteQueries.deleteAnnotation(annotation_id), function(err, result) {
           done();
-          if (!result) res.sendStatus(404);
-          if (result.rows.length === 0) res.sendStatus(404);
-          resolve(result.rows[0].uri_user_id);
+          if (!result) {
+            console.error('Error in query: ', err);
+            res.sendStatus(404);
+            reject(err);
+          }
+          else if (result.rows.length === 0) res.sendStatus(404);
+          else resolve(result.rows[0].uri_user_id);
         })
       });
     });
@@ -298,17 +299,57 @@ app.delete('/api/annotations/:id',function (req, res) {
           console.error('Connection error: ', err);
           reject(err);
         }
-        
-
+        client.query(checkQueries.checkIfAnyAnnotationsForThisURIUser(uri_user_id), function(err, result) {
+          done();
+          if (!result) {
+            console.error('Error in query: ', err);
+            res.sendStatus(404);
+            reject(err);
+          }
+          else {
+            var obj = {
+              uri_user_id: uri_user_id,
+              exists: result.rows[0].exists
+            }  
+            resolve(obj);
+          }
+        })
       })
     })
   }
 
+  var deleteURIUserOrNot = function(obj) {
+    if (!obj.exists) {
+      pg.connect(connectionString, function(err, client, done) {
+        if (err) {
+          done();
+          console.error('Connection error: ', err);
+          reject(err);
+        }
+        client.query(deleteQueries.deleteURIUser(obj.uri_user_id), function(err, result) {
+          done();
+          if (!result) {
+            console.error('Error in query: ', err);
+            res.sendStatus(404);
+            reject(err);
+          }
+          else {
+            res.sendStatus(204);
+          }
+        })
+      });
+    }
+    res.sendStatus(204);
+  }
+
+  deleteThatAnnotation(annotation_id)
+    .then(checkIfAnnotationsForThisURIUserIsEmpty)
+    .then(deleteURIUserOrNot)
+    .catch(function(err) {
+      console.error('Error in deleting annotation: ', err);
+    })
 
 });
-
-
-
 
 
 
@@ -448,12 +489,14 @@ app.get('/api/homefeed', function (req, res) {
       title: uriObj.title,
       general_post: generalPost,
       is_shared: shared,
+      updated_at: uriObj.updated_at,
       commentsOnGeneralPost: comments,
       likes: likes
     };
   };
  
   var convertUriObjToArticleObj = function(uriObj, userId) {
+    console.log('show me the uriObj: ', uriObj)
     return getGeneralPostCommentsLikes(uriObj, userId)
       .then(function(generalPostCommentsLikesArray) {
         return assembleArticleObj(generalPostCommentsLikesArray, uriObj);
@@ -634,20 +677,52 @@ app.put('/api/personalfeed/share', function(req, res) {
   var uri = req.query.uri;
   var is_shared = req.query.is_shared;
 
-  pg.connect(connectionString, function(err, client, done) {
-    if (err) console.error('Connection error: ', err);
-    client.query(updateQueries.updateSharedStatusTo(is_shared, uri, user_id), function(err, result)  {
-      done();
-      if (!result) res.sendStatus(404)
-      else if (result.rows.length === 0) res.sendStatus(404);
-      else res.sendStatus(204);
+  var updateArticlesSharedStatusTo = function(is_shared, uri, user_id) {
+    return new Promise(function(resolve, reject) {
+      pg.connect(connectionString, function(err, client, done) {
+        if (err) {
+          console.error('Connection error: ', err);
+          resolve(err);
+        }
+        client.query(updateQueries.updateSharedStatusTo(is_shared, uri, user_id), function(err, result)  {
+          done();
+          if (!result) res.sendStatus(404)
+          else if (result.rows.length === 0) res.sendStatus(404);
+          else {
+            console.log('hey yo, the uri_user_id: ', result.rows[0].id);
+            resolve(result.rows[0].id);
+          }
+        })
+      })
     })
+  }
+
+  var updateTimestampOnArticle = function(uri_user_id) {
+    console.log('what is uri_user_id: ', uri_user_id)
+    pg.connect(connectionString, function(err, client, done) {
+      if (err) console.error('Connection error: ', err);
+      client.query(updateQueries.updateTimestampOnURIUser(uri_user_id), function(err, result) {
+        done();
+        console.log('what is "result" in updateTimestampOnArticle: ', result);
+        if (!result) res.sendStatus(404);
+        else if (result.rows.length === 0) res.sendStatus(404);
+        else res.sendStatus(204);
+      })
+    })
+  }
+
+  updateArticlesSharedStatusTo(is_shared, uri, user_id) 
+  .then(updateTimestampOnArticle)
+  .catch(function(err) {
+    console.error('Error in updating the shared status of article: ', err);
   })
+
 })
 
 
   app.post('/api/users/update', function(req,res){
     var userInfo = req.body;
+
     var updateUserFollowerRow = function(table,infoObj) {
       return new Promise(function(resolve,reject){
         pg.connect(connectionString, function(err,client,done){
@@ -871,11 +946,6 @@ app.get('/api/users/uri/annotations', function (req, res) {
 
 })
 
-
-app.get('/api/personalfeed/share', function (req, res) {
-  var body = req.body;
-
-});
 
   app.post('/api/uri/gp', function(req,res) {
     var gpObj = req.body;

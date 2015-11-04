@@ -12,6 +12,10 @@ var deleteQueries = {
 					 "AND follower_id = " + follower_id + " RETURNING id;";
 	},
 
+	deleteURIUser: function (uri_user_id) {
+		return "DELETE FROM uri_users WHERE id = " + uri_user_id + " RETURNING id;";
+	},
+
 	deleteAnnotation: function (annotation_id) {
 		return "DELETE FROM annotations " +
 					 "WHERE id = " + annotation_id + "RETURNING uri_user_id;"; 

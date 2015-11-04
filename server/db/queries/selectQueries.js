@@ -53,7 +53,7 @@ var selectQueries = {
 		return "SELECT * " +
 					 "FROM uri, uri_users uu " +
 					 "WHERE uu.user_id = " + user_id + " " +
-					 "AND uri.id = uu.uri_id;";
+					 "AND uri.id = uu.uri_id ORDER BY uu.updated_at DESC;";
 	},
 
 	whoLikedThisPost: function (uri, user_id) {

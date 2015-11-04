@@ -53,8 +53,11 @@ var checkQueries = {
 					 ");";
 	},
 
-	checkIfAnyAnnotationsForThisURIUser: function () {
-		
+	checkIfAnyAnnotationsForThisURIUser: function (uri_user_id) {
+		return "SELECT EXISTS (" +
+							"SELECT 1 FROM annotations " +
+							"WHERE uri_user_id = " + uri_user_id + 
+					 ");"
 	}
 	
 }
