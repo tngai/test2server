@@ -697,7 +697,7 @@ app.put('/api/personalfeed/share', function(req, res) {
 
   var updateTimestampOnArticle = function(uri_user_id) {
     console.log('what is uri_user_id: ', uri_user_id)
-    pg.connect(connectionString, function(resolve, reject) {
+    pg.connect(connectionString, function(err, client, done) {
       if (err) console.error('Connection error: ', err);
       client.query(updateQueries.updateTimestampOnURIUser(uri_user_id), function(err, result) {
         done();
