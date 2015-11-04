@@ -972,7 +972,57 @@ app.get('/api/personalfeed/share', function (req, res) {
       res.set('Content-Type','application/JSON'); 
       res.json(req.body);
     })
-});
+  });
+
+  app.post('/api/likes',function(req,res) {
+    var uri = req.body.uri;
+    var user_id = req.body.user_id;
+    var follower_id = req.body.follower_id;
+    var likeToggle = req.body.likeToggle
+
+    var insertLike = function(uri,user_id,follower_id) {
+      return new Promise(function(resolve,reject){
+        pg.connect(connectionString,function(err,client,done) {
+          if (err) {
+            console.error('Connection error: ', err);
+            return reject(err);
+          }
+          client.query(insertQueries.insertLikes(uri,user_id,follower_id),function(err,result){
+            done();
+            resolve(result);
+          });      
+        });
+      });  
+    };
+    var deleteLike = function(uri, user_id, follower_id){
+      return new Promise(function(resolve,reject){
+        pg.connect(connectionString,function(err,client,done) {
+          if (err) {
+            console.error('Connection error: ', err);
+            return reject(err);
+          }
+          client.query(deleteQueries.deleteLike(uri,user_id,follower_id),function(err,result){
+            done();
+            resolve(result);
+          });      
+        });
+      });     
+    };
+    console.log('the like toggle ', likeToggle, likeToggle.length);
+    if(likeToggle.length === 5) {
+      deleteLike(uri, user_id, follower_id).then(function(result){
+        res.set('Content-Type','application/JSON'); 
+        res.json(req.body);  
+      }) 
+    }else{
+      insertLike(uri, user_id, follower_id).then(function(results) {
+        res.set('Content-Type','application/JSON'); 
+        res.json(req.body);        
+      });  
+    }
+  });
+
+
 
 
 

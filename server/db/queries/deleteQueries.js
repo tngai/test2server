@@ -24,6 +24,19 @@ var deleteQueries = {
 	deleteComment: function (commentID) {
 		return "DELETE FROM comments " + 
 					 "WHERE id = " + commentID + ";";
+	},
+
+	deleteLike: function (uri, user_id, follower_id) {
+		var rString;
+		rString = "DELETE FROM uri_users_followers uuf " +
+			   "USING uri, users_followers uu " +
+			   "WHERE uu.id = uuf.user_follower_id " +
+			   "AND uri.id = uuf.uri_id " +
+			   "AND uri.uri_link = '" + uri + "' " +
+			   "AND uu.user_id = " + user_id + " " +
+			   "AND uu.follower_id =" + follower_id + " RETURNING *;";
+		return rString;
+
 	}
 
 }

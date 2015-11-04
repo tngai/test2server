@@ -58,6 +58,16 @@ var insertQueries = {
 					 			"AND uf.id = uuf.user_follower_id AND uri.id = uuf.uri_id AND uri.uri_link = '" + uri + "'), " +
 							"'" + message + "', " + annotation_id +
 					 ");";
+	},
+
+	insertLikes: function(uri, user_id, follower_id) {
+		var rString;
+		rString = "INSERT INTO uri_users_followers (uri_id, user_follower_id, is_liked) " +
+				"VALUES ("+
+					"(SELECT id FROM uri WHERE uri_link = '" + uri + "'), " +
+					"(SELECT id FROM users_followers WHERE user_id = " + user_id + " AND follower_id = " + follower_id + "), true" +
+				") RETURNING *;"
+		return rString;
 	}
 
 }
