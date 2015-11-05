@@ -113,7 +113,6 @@ app.post('/api/users', function (req, res) {
 
 
 app.post('/api/annotations', function (req, res) {
-  console.log(' the req body ', req.body)
   var user_id = req.body.user_id;
   var uri = req.body.uri;
   var title = req.body.title;
@@ -137,7 +136,6 @@ app.post('/api/annotations', function (req, res) {
     });
   })()
   .then(function(exists) {
-    console.log('just checked if uri exists: ', exists);
     return new Promise(function(resolve, reject) {
       if (!exists) {
         pg.connect(connectionString, function(err, client, done) {
@@ -160,7 +158,6 @@ app.post('/api/annotations', function (req, res) {
     }); 
   })
   .then(function(uri_id) {
-    console.log('just got the uri_id: ', uri_id);
     return new Promise(function(resolve, reject) {
       (function(){
         return new Promise(function(resolveNested1, rejectNested1) {
@@ -168,14 +165,12 @@ app.post('/api/annotations', function (req, res) {
             if (err) console.error('Connection error: ', err);
             client.query(checkQueries.checkURIUser(uri_id, user_id), function(err, result) {
               done();
-              console.log('what is user_id: ', user_id)
               resolveNested1(result.rows[0].exists);
             });
           });
         })
       })()
       .then(function(exists) {
-        console.log('just checked if uri_id exists: ', exists);
         if (!exists) {
           pg.connect(connectionString, function(err, client, done) {
             if (err) console.error('Connection error: ', err);
@@ -198,7 +193,6 @@ app.post('/api/annotations', function (req, res) {
     });
   })
   .then(function(uri_user_id) {
-    console.log('just got the uri_user_id: ', uri_user_id);
     pg.connect(connectionString, function(err, client, done) {
       if (err) console.error('Connection error: ', err);
       client.query(insertQueries.insertAnnotation(uri_user_id, text, quote, start, end, startOffset, endOffset), function(err, result) {
