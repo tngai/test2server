@@ -737,14 +737,14 @@ app.put('/api/personalfeed/share', function(req, res) {
   //     });
   //   };
 
-   var userFollowerArr = [updateUserFollowerRow("users",userInfo), updateUserFollowerRow("followers",userInfo)];
+  //  var userFollowerArr = [updateUserFollowerRow("users",userInfo), updateUserFollowerRow("followers",userInfo)];
    
-   Promise.all(userFollowerArr).then(function() {
-    res.set('Content-Type','application/JSON'); 
-    res.json(userInfo);
-   });
+  //  Promise.all(userFollowerArr).then(function() {
+  //   res.set('Content-Type','application/JSON'); 
+  //   res.json(userInfo);
+  //  });
 
-  });
+  // });
 
 
 
