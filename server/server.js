@@ -339,7 +339,9 @@ app.delete('/api/annotations/:id',function (req, res) {
         })
       });
     }
-    res.sendStatus(204);
+    else {
+      res.sendStatus(204);
+    }
   }
 
   deleteThatAnnotation(annotation_id)
