@@ -159,6 +159,7 @@ app.post('/api/annotations', function (req, res) {
     }); 
   })
   .then(function(uri_id) {
+    console.log("uri_id: ", uri_id);
     return new Promise(function(resolve, reject) {
       (function(){
         return new Promise(function(resolveNested1, rejectNested1) {
@@ -194,6 +195,7 @@ app.post('/api/annotations', function (req, res) {
     });
   })
   .then(function(uri_user_id) {
+    console.log('uri_user_id: ', uri_user_id);
     pg.connect(connectionString, function(err, client, done) {
       if (err) console.error('Connection error: ', err);
       client.query(insertQueries.insertAnnotation(uri_user_id, text, quote, start, end, startOffset, endOffset), function(err, result) {
