@@ -707,9 +707,6 @@ app.put('/api/personalfeed/share', function(req, res) {
   })
 
 })
-
-
-<<<<<<< HEAD
   app.post('/api/users/update', function(req,res){
     console.log('here  ', req.body )
     var userInfo = req.body;
