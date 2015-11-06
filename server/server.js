@@ -720,49 +720,51 @@ app.put('/api/personalfeed/share', function(req, res) {
 })
 
 
-  // app.post('/api/users/update', function(req,res){
-  //   var userInfo = req.body;
+  app.post('/api/users/update', function(req,res){
+    console.log('here  ', req.body )
+    var userInfo = req.body;
 
-  //   var updateUserFollowerRow = function(table,infoObj) {
-  //     return new Promise(function(resolve,reject){
-  //       pg.connect(connectionString, function(err,client,done){
-  //         if (err) console.error('Connection error: ', err);
-  //         client.query(updateQueries.updateUserRow(table, infoObj), function(err,result) {
-  //           if (err) console.error('Connection error: ', err);
-  //           console.log('the result in the query ', result)
-  //           done();
-  //           resolve(result);
-  //         });
-  //       }) 
-  //     });
-  //   };
+    var updateUserRow = function(infoObj) {
+      return new Promise(function(resolve,reject){
+        pg.connect(connectionString, function(err,client,done){
+          if (err) console.error('Connection error: ', err);
+          client.query(updateQueries.updateUserRow('users',infoObj), function(err,result) {
+            if (err) console.error('Connection error: ', err);
+            console.log('the result in the query ', result)
+            done();
+            resolve(result.rows);
+          });
+        }) 
+      });
+    };
+    var updateUserFollowerRow = function(table,infoObj) {
+      return new Promise(function(resolve,reject){
+        pg.connect(connectionString, function(err,client,done){
+          if (err) console.error('Connection error: ', err);
+          client.query(updateQueries.updateUserRow('followers', infoObj), function(err,result) {
+            if (err) console.error('Connection error: ', err);
+            console.log('the result in the query ', result)
+            done();
+            resolve(result);
+          });
+        }) 
+      });
+    };
 
-  //  var userFollowerArr = [updateUserFollowerRow("users",userInfo), updateUserFollowerRow("followers",userInfo)];
+   var userFollowerArr = [updateUserFollowerRow("users",userInfo), updateUserFollowerRow("followers",userInfo)];
    
-  //  Promise.all(userFollowerArr).then(function() {
-  //   res.set('Content-Type','application/JSON'); 
-  //   res.json(userInfo);
-  //  });
+   Promise.all(userFollowerArr).then(function() {
+    res.set('Content-Type','application/JSON'); 
+    res.json(userInfo);
+   });
 
-  // });
+  });
 
 
 
 app.post('/api/users/update', function(req,res){
   var userInfo = req.body;
-  var updateUserRow = function(infoObj) {
-    return new Promise(function(resolve,reject){
-      pg.connect(connectionString, function(err,client,done){
-        if (err) console.error('Connection error: ', err);
-        client.query(updateQueries.updateUserRow(infoObj), function(err,result) {
-          if (err) console.error('Connection error: ', err);
-          console.log('the result in the query ', result)
-          done();
-          resolve(result.rows);
-        });
-      }) 
-    });
-  };
+  
 
   updateUserRow(userInfo).then(function(result) {
     res.set('Content-Type','application/JSON'); 
