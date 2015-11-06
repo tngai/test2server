@@ -3,6 +3,7 @@ var bodyParser = require('body-parser');
 var http = require('http');
 var morgan = require('morgan');
 var Promise = require('bluebird');
+var validator = require('validator');
 
 var app = express();
 var server = http.Server(app);
@@ -117,8 +118,8 @@ app.post('/api/annotations', function (req, res) {
   var user_id = req.body.user_id;
   var uri = req.body.uri;
   var title = req.body.title;
-  var text = req.body.text;
-  var quote = req.body.quote;
+  var text = validator.escape(validator.toString(req.body.text));
+  var quote = validator.escape(validator.toString(req.body.quote));
   var start = req.body.ranges[0].start;
   var end = req.body.ranges[0].end;
   var startOffset = req.body.ranges[0].startOffset;
