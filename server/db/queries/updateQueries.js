@@ -44,7 +44,7 @@ var updateQueries = {
 		}
 		info = info.join(',');
 
-		rString = "UPDATE "+table+" SET "+info+ " WHERE id= '"+newInfo.user_id"';"
+		rString = "UPDATE "+table+" SET "+info+ " WHERE id= '"+newInfo.user_id+"';"
 		return rString;		
 	}
 }
